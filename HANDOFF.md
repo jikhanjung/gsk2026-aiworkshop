@@ -22,7 +22,8 @@
 
 ## 결정 사항
 
-- git 으로 관리 (`git init` 완료, 아직 커밋 없음). `data/`, `dist/` 는 `.gitignore`.
+- git 저장소: **public** `github.com/jikhanjung/gsk2026` (main). `data/`, `dist/` 는 `.gitignore` — 학회 데이터는 절대 커밋하지 말 것.
+- 학생은 Colab 에서 바로 열 수 있음: `https://colab.research.google.com/github/jikhanjung/gsk2026/blob/main/gsk2026_practice.ipynb`
 - 지금 데이터는 strati2026 로 만든 **임시본**. GSK 2026 프로그램이 나오면 그걸로 다시 만든다.
 
 ## 열린 질문
