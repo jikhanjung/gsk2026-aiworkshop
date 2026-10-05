@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 3 · 날짜·장소 필터와 검색</title>
+<style>
+  body { font-family: system-ui, "Noto Sans KR", sans-serif; margin: 0; background: #f4f5f7; color: #1d2733; }
+  header { background: #0d3b66; color: #fff; padding: 12px 16px; position: sticky; top: 0; }
+  header h1 { margin: 0; font-size: 18px; }
+  main { max-width: 720px; margin: 0 auto; padding: 12px; }
+  .chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; }
+  .chip { flex: none; border: 1px solid #e4e7ec; background: #fff; border-radius: 999px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+  .chip.on { background: #0d3b66; color: #fff; border-color: #0d3b66; }
+  input[type=search] { width: 100%; box-sizing: border-box; padding: 9px 12px; font-size: 15px; border: 1px solid #ccd; border-radius: 8px; margin-bottom: 10px; }
+  .count { color: #6b7686; font-size: 13px; margin: 0 2px 8px; }
+  .talk { background: #fff; border: 1px solid #e4e7ec; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+  .time { font-weight: 700; color: #0d3b66; font-size: 13px; }
+  .room { color: #6b7686; font-size: 12px; margin-left: 6px; }
+  .title { margin: 4px 0 2px; font-weight: 600; }
+  .author { color: #6b7686; font-size: 13px; }
+  mark { background: #ffe58a; }
+</style>
+</head>
+<body>
+<header><h1 id="conf-name"></h1></header>
+<main>
+  <div class="chips" id="days"></div>
+  <div class="chips" id="rooms"></div>
+  <input type="search" id="q" placeholder="제목·저자 검색">
+  <div class="count" id="count"></div>
+  <div id="list"></div>
+</main>
+
+<script>
+const DATA = __DATA__;
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+
+// [Step 3] 화면 상태(state)를 한곳에 두고, 바뀔 때마다 render() 로 다시 그린다
+const state = { day: DATA.meta.days[0], room: "전체", q: "" };
+const rooms = ["전체", ...new Set(DATA.talks.map(t => t.room))].sort((a, b) => a === "전체" ? -1 : b === "전체" ? 1 : a.localeCompare(b));
+
+function chipsHTML(values, current, label = v => v) {
+  return values.map(v => `<button class="chip ${v === current ? "on" : ""}" data-v="${esc(v)}">${esc(label(v))}</button>`).join("");
+}
+
+function highlight(text, q) {
+  const safe = esc(text);
+  if (!q) return safe;
+  const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
+  return safe.replace(re, m => `<mark>${m}</mark>`);
+}
+
+function render() {
+  document.getElementById("days").innerHTML = chipsHTML(DATA.meta.days, state.day, d => DATA.talks.find(t => t.date === d).day_label);
+  document.getElementById("rooms").innerHTML = chipsHTML(rooms, state.room);
+
+  const q = state.q.trim().toLowerCase();
+  const talks = DATA.talks.filter(t =>
+    // 검색어가 있으면 날짜와 상관없이 전체에서 찾는다
+    (q ? true : t.date === state.day) &&
+    (state.room === "전체" || t.room === state.room) &&
+    (!q || t.title.toLowerCase().includes(q) || (t.first_author || "").toLowerCase().includes(q))
+  );
+
+  document.getElementById("count").textContent = `${talks.length}건`;
+  document.getElementById("list").innerHTML = talks.map(t => `
+    <div class="talk">
+      <span class="time">${q ? t.day_label + " · " : ""}${t.time_start}–${t.time_end}</span>
+      <span class="room">${esc(t.room)}${t.session ? " · " + t.session : ""}</span>
+      <div class="title">${highlight(t.title, q)}</div>
+      <div class="author">${highlight(t.first_author, q)}</div>
+    </div>`).join("");
+}
+
+// 이벤트: 칩을 누르거나 검색어를 입력하면 state 를 바꾸고 다시 그린다
+document.getElementById("days").addEventListener("click", e => {
+  if (e.target.dataset.v) { state.day = e.target.dataset.v; render(); }
+});
+document.getElementById("rooms").addEventListener("click", e => {
+  if (e.target.dataset.v) { state.room = e.target.dataset.v; render(); }
+});
+document.getElementById("q").addEventListener("input", e => { state.q = e.target.value; render(); });
+
+document.getElementById("conf-name").textContent = DATA.meta.name;
+render();
+
+// 해 볼 것: 세션 코드로도 거르는 칩 줄을 추가해 보기
+</script>
+</body>
+</html>

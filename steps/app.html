@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d3b66">
+<title>학회 프로그램</title>
+<style>
+  :root {
+    --navy: #0d3b66; --accent: #ee9b00; --red: #e23b3b;
+    --bg: #f4f5f7; --card: #fff; --ink: #1d2733; --muted: #6b7686; --line: #e4e7ec;
+    --tabh: 58px;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.45;
+    padding-bottom: calc(var(--tabh) + env(safe-area-inset-bottom));
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; }
+
+  /* 상단 바 */
+  .appbar { position: sticky; top: 0; z-index: 20; background: var(--navy); color: #fff;
+    padding: calc(9px + env(safe-area-inset-top)) 16px 9px; }
+  .brand-main { font-weight: 800; font-size: 16px; }
+  .brand-sub { font-size: 11.5px; color: #cfe0f0; margin-top: 2px; }
+
+  .content { max-width: 720px; margin: 0 auto; padding: 12px 12px 24px; }
+  .page-h { font-size: 20px; margin: 8px 4px 12px; }
+  .empty, .hint { color: var(--muted); padding: 16px 4px; }
+  .hint { padding: 0 4px 10px; font-size: 13px; }
+
+  /* 날짜·장소 칩 */
+  .chips { display: flex; gap: 6px; overflow-x: auto; padding: 2px 2px 10px; -webkit-overflow-scrolling: touch; }
+  .chip { flex: 0 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+    padding: 6px 13px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; white-space: nowrap; }
+  .chip.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .chips.rooms .chip.on { background: var(--accent); border-color: var(--accent); }
+
+  /* 발표 카드 */
+  .talk { display: flex; gap: 10px; align-items: flex-start; background: var(--card);
+    border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; }
+  .talk-time { flex: 0 0 auto; width: 44px; font-variant-numeric: tabular-nums; font-weight: 700;
+    font-size: 12px; color: var(--navy); line-height: 1.25; padding-top: 2px; }
+  .talk-body { flex: 1 1 auto; min-width: 0; }
+  .talk-title { display: block; font-size: 14.5px; font-weight: 600; }
+  .talk-meta { margin-top: 4px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .author, .place { color: var(--muted); font-size: 12.5px; }
+  .snippet { margin-top: 5px; color: var(--muted); font-size: 12.5px; }
+  .talk.clash { border-color: var(--red); background: #fff5f5; }
+  .clash-badge { color: var(--red); font-size: 12px; font-weight: 700; }
+  .badge { background: var(--navy); color: #fff; font-size: 11px; font-weight: 700; border-radius: 6px; padding: 1px 6px; }
+  .badge.plenary { background: var(--accent); }
+  .badge.gray { background: #9aa4b2; }
+  .bm { flex: 0 0 auto; background: none; border: none; font-size: 22px; line-height: 1;
+    color: var(--muted); cursor: pointer; padding: 2px; }
+  .bm.on { color: var(--accent); }
+  .bm.big { font-size: 26px; margin-left: auto; }
+  .day-h { font-size: 14px; color: var(--navy); margin: 18px 4px 8px; }
+  mark { background: #ffe58a; color: inherit; border-radius: 2px; }
+
+  /* 발표 상세 */
+  .back { background: none; border: none; color: var(--navy); font-weight: 600; padding: 4px 2px 8px; cursor: pointer; }
+  .detail-when { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .detail-title { font-size: 20px; line-height: 1.3; margin: 4px 0 10px; }
+  .detail-session { display: flex; gap: 8px; align-items: center; background: var(--card);
+    border: 1px solid var(--line); border-radius: 12px; padding: 9px 12px; margin: 0 0 12px;
+    font-size: 13.5px; color: var(--navy); }
+  .detail-authors { font-weight: 600; margin: 0 0 12px; }
+  .detail-authors sup { color: var(--muted); font-weight: 400; }
+  .detail-abstract { background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px; font-size: 14.5px; text-align: justify; white-space: pre-line; }
+  .kw { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+  .kwchip { background: #eef2f7; color: var(--navy); border-radius: 14px; padding: 4px 10px; font-size: 12.5px; cursor: pointer; border: none; }
+  .affil { margin-top: 8px; color: var(--muted); font-size: 12.5px; }
+  .affil summary { cursor: pointer; }
+  .affil ol { padding-left: 18px; }
+
+  /* 세션 목록 */
+  .slist { list-style: none; margin: 0; padding: 0; }
+  .slist a { display: flex; align-items: center; gap: 10px; background: var(--card);
+    border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-bottom: 8px; }
+  .stitle { flex: 1 1 auto; font-size: 14px; font-weight: 600; }
+  .scount { color: var(--muted); font-size: 12px; white-space: nowrap; }
+  .session-title { font-size: 16px; font-weight: 600; margin: 0 4px 12px; }
+
+  /* 검색 */
+  .searchbar input { width: 100%; padding: 11px 14px; border: 1px solid var(--line); border-radius: 12px;
+    font-size: 16px; background: var(--card); color: var(--ink); margin: 4px 0 10px; }
+  .count { color: var(--muted); font-size: 13px; margin: 0 4px 10px; }
+
+  /* 내 일정: 내보내기/불러오기 */
+  .tools { margin: 24px 2px 8px; padding-top: 16px; border-top: 1px solid var(--line); }
+  .tools-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px;
+    font-size: 13px; font-weight: 600; color: var(--navy); cursor: pointer; }
+  .btn.danger { color: #b03030; border-color: #e3b6b6; }
+  .msg { margin-top: 10px; font-size: 13px; color: #1f7a3d; }
+
+  /* 하단 탭 */
+  .tabbar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 20; display: flex;
+    background: var(--card); border-top: 1px solid var(--line);
+    height: calc(var(--tabh) + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); }
+  .tab { position: relative; flex: 1; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 2px; font-size: 11px; color: var(--muted); }
+  .tab .ic { font-size: 20px; line-height: 1; }
+  .tab.on { color: var(--navy); font-weight: 700; background: rgba(13, 59, 102, .07); }
+  .tab.on::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--navy); }
+
+  @media (min-width: 760px) {
+    .talk-title { font-size: 15px; }
+    .detail-title { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<header class="appbar">
+  <div class="brand-main" id="brand"></div>
+  <div class="brand-sub" id="brand-sub"></div>
+</header>
+
+<main class="content" id="view"></main>
+
+<nav class="tabbar">
+  <a class="tab" href="#/program" data-tab="program"><span class="ic">🗓️</span><span>프로그램</span></a>
+  <a class="tab" href="#/sessions" data-tab="sessions"><span class="ic">📚</span><span>세션</span></a>
+  <a class="tab" href="#/search" data-tab="search"><span class="ic">🔍</span><span>검색</span></a>
+  <a class="tab" href="#/my" data-tab="my"><span class="ic">⭐</span><span>내 일정</span></a>
+</nav>
+
+<script>
+const DATA = __DATA__;
+
+// ───────────────────────── 1. 준비: 데이터 색인 ─────────────────────────
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+// id → 객체 를 바로 찾을 수 있게 Map 을 만들어 둔다 (매번 find() 하지 않도록)
+const talkById = new Map(DATA.talks.map(t => [t.id, t]));
+const abstractById = new Map(DATA.abstracts.map(a => [a.id, a]));
+const sessionByCode = new Map(DATA.sessions.map(s => [s.code, s]));
+const dayLabel = Object.fromEntries(DATA.talks.map(t => [t.date, t.day_label]));
+const rooms = [...new Set(DATA.talks.map(t => t.room))].sort();
+
+// 프로그램에 발표 일정이 없는 초록(포스터 등)도 검색·세션 화면에서 보여 준다
+const scheduledAbs = new Set(DATA.talks.map(t => t.abstract_id).filter(Boolean));
+const unscheduled = DATA.abstracts.filter(a => !scheduledAbs.has(a.id));
+
+// 검색용 문자열을 미리 소문자로 만들어 둔다 (키를 누를 때마다 만들면 느리다)
+const searchItems = [
+  ...DATA.talks.map(t => ({ talk: t, abs: abstractById.get(t.abstract_id) })),
+  ...unscheduled.map(a => ({ talk: null, abs: a })),
+].map(item => {
+  const { talk, abs } = item;
+  item.head = [talk?.title, talk?.first_author, abs?.title, ...(abs?.authors || []), ...(abs?.keywords || []),
+               talk?.session || abs?.session].join("\n").toLowerCase();
+  item.body = (abs?.abstract || "").toLowerCase();
+  return item;
+});
+
+// ───────────────────────── 2. 북마크 (localStorage) ─────────────────────────
+const BM_KEY = "gsk2026.bookmarks";   // step4 와 같은 키 → 실습 중 찍은 북마크가 그대로 이어진다
+function loadBookmarks() {
+  try { return new Set(JSON.parse(localStorage.getItem(BM_KEY) || "[]").map(Number)); }
+  catch (e) { return new Set(); }
+}
+const bookmarks = loadBookmarks();
+function saveBookmarks() {
+  try { localStorage.setItem(BM_KEY, JSON.stringify([...bookmarks])); return true; }
+  catch (e) { return false; }
+}
+function toggleBookmark(id) {
+  if (bookmarks.has(id)) bookmarks.delete(id); else bookmarks.add(id);
+  saveBookmarks();
+}
+
+// ───────────────────────── 3. 공통 조각 ─────────────────────────
+const state = { day: DATA.meta.days[0], room: "전체", q: "", msg: "" };
+
+// 원문을 검색어 기준으로 자른 뒤 조각마다 이스케이프한다
+// (이스케이프한 뒤에 찾으면 "amp" 검색이 &amp; 안을 건드린다)
+function highlight(text, q) {
+  if (!q) return esc(text);
+  const re = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+  return String(text ?? "").split(re).map((part, i) => i % 2 ? `<mark>${esc(part)}</mark>` : esc(part)).join("");
+}
+// 긴 초록에서 검색어 주변만 잘라 보여 준다
+function snippet(text, q, width = 60) {
+  const i = text.toLowerCase().indexOf(q);
+  if (i < 0) return "";
+  const from = Math.max(0, i - width), to = Math.min(text.length, i + q.length + width);
+  return (from > 0 ? "…" : "") + highlight(text.slice(from, to), q) + (to < text.length ? "…" : "");
+}
+
+function sessionBadge(code, title) {
+  return code ? `<span class="badge" title="${esc(title || sessionByCode.get(code)?.title)}">${esc(code)}</span>` : "";
+}
+
+function talkCard(t, { q = "", showDay = false, showRoom = true, clash = false, extra = "" } = {}) {
+  const on = bookmarks.has(t.id);
+  const plenary = t.kind === "plenary" ? '<span class="badge plenary">기조</span>' : "";
+  return `
+    <div class="talk ${clash ? "clash" : ""}">
+      <div class="talk-time">${showDay ? esc(t.day_label) + "<br>" : ""}${t.time_start}<br>${t.time_end}</div>
+      <div class="talk-body">
+        <a class="talk-title" href="#/talk/${t.id}">${highlight(t.title, q)}</a>
+        <div class="talk-meta">
+          ${plenary}${sessionBadge(t.session)}
+          <span class="author">${highlight(t.first_author, q)}</span>
+          ${showRoom ? `<span class="place">· ${esc(t.room)}</span>` : ""}
+          ${clash ? '<span class="clash-badge">⚠ 시간 겹침</span>' : ""}
+        </div>
+        ${extra}
+      </div>
+      <button class="bm ${on ? "on" : ""}" data-id="${t.id}" title="북마크">${on ? "★" : "☆"}</button>
+    </div>`;
+}
+
+function abstractCard(a, { q = "", extra = "" } = {}) {
+  return `
+    <div class="talk">
+      <div class="talk-time"><span class="badge gray">초록</span></div>
+      <div class="talk-body">
+        <a class="talk-title" href="#/abstract/${a.id}">${highlight(a.title, q)}</a>
+        <div class="talk-meta">${sessionBadge(a.session)}<span class="author">${highlight(a.authors[0] || "", q)}</span></div>
+        ${extra}
+      </div>
+    </div>`;
+}
+
+function chips(values, current, label = v => v) {
+  return values.map(v => `<button class="chip ${v === current ? "on" : ""}" data-v="${esc(v)}">${esc(label(v))}</button>`).join("");
+}
+
+// ───────────────────────── 4. 화면(view) 들 ─────────────────────────
+// 각 view 함수는 HTML 문자열을 돌려준다. route() 가 그것을 #view 에 넣는다.
+
+function viewProgram() {
+  const talks = DATA.talks.filter(t => t.date === state.day && (state.room === "전체" || t.room === state.room));
+  return `
+    <div class="chips" data-set="day">${chips(DATA.meta.days, state.day, d => dayLabel[d])}</div>
+    <div class="chips rooms" data-set="room">${chips(["전체", ...rooms], state.room)}</div>
+    <div class="count">${talks.length}건</div>
+    ${talks.map(t => talkCard(t, { showRoom: state.room === "전체" })).join("") || '<div class="empty">발표가 없습니다.</div>'}`;
+}
+
+function viewSessions() {
+  const count = code => DATA.talks.filter(t => t.session === code).length;
+  return `
+    <h1 class="page-h">세션 ${DATA.sessions.length}개</h1>
+    <ul class="slist">${DATA.sessions.map(s => `
+      <li><a href="#/session/${encodeURIComponent(s.code)}">
+        <span class="badge">${esc(s.code)}</span>
+        <span class="stitle">${esc(s.title)}</span>
+        <span class="scount">${count(s.code)}편</span></a></li>`).join("")}
+    </ul>`;
+}
+
+function viewSession(code) {
+  const s = sessionByCode.get(code);
+  if (!s) return '<div class="empty">세션을 찾을 수 없습니다.</div>';
+  const talks = DATA.talks.filter(t => t.session === code);
+  const posters = unscheduled.filter(a => a.session === code);
+  let html = `<button class="back" data-back>← 뒤로</button>
+    <h1 class="page-h"><span class="badge">${esc(code)}</span></h1>
+    <div class="session-title">${esc(s.title)}</div>`;
+  for (const day of DATA.meta.days) {
+    const list = talks.filter(t => t.date === day);
+    if (list.length) html += `<h2 class="day-h">${esc(dayLabel[day])}</h2>` + list.map(t => talkCard(t)).join("");
+  }
+  if (posters.length) {
+    html += `<h2 class="day-h">발표 일정 없는 초록 (${posters.length})</h2>` + posters.map(a => abstractCard(a)).join("");
+  }
+  return html;
+}
+
+function viewDetail(talk, abs) {
+  if (!talk && !abs) return '<div class="empty">발표를 찾을 수 없습니다.</div>';
+  const code = talk?.session || abs?.session;
+  const s = sessionByCode.get(code);
+  let html = `<button class="back" data-back>← 뒤로</button>`;
+  if (talk) {
+    const on = bookmarks.has(talk.id);
+    html += `<div class="detail-when">
+      ${talk.kind === "plenary" ? '<span class="badge plenary">기조강연</span>' : ""}
+      ${esc(talk.day_label)} · ${talk.time_start}–${talk.time_end} · ${esc(talk.room)}
+      <button class="bm big ${on ? "on" : ""}" data-id="${talk.id}" title="북마크">${on ? "★" : "☆"}</button></div>`;
+  } else {
+    html += `<div class="detail-when"><span class="badge gray">초록</span> 프로그램에 발표 일정이 없습니다</div>`;
+  }
+  html += `<h1 class="detail-title">${esc(talk?.title || abs.title)}</h1>`;
+  if (s) html += `<a class="detail-session" href="#/session/${encodeURIComponent(code)}">${sessionBadge(code)} ${esc(s.title)}</a>`;
+  if (!abs) {
+    return html + `<p class="detail-authors">${esc(talk.first_author)}</p><p class="empty">연결된 초록이 없습니다.</p>`;
+  }
+  html += `<p class="detail-authors">${abs.authors.map(esc).join(", ")}</p>`;
+  if (abs.abstract) html += `<div class="detail-abstract">${esc(abs.abstract)}</div>`;
+  if (abs.keywords.length) {
+    html += `<div class="kw">${abs.keywords.map(k => `<button class="kwchip" data-kw="${esc(k)}">${esc(k)}</button>`).join("")}</div>`;
+  }
+  if (abs.affiliations.length) {
+    html += `<details class="affil"><summary>소속 (${abs.affiliations.length})</summary>
+      <ol>${abs.affiliations.map(a => `<li>${esc(a)}</li>`).join("")}</ol></details>`;
+  }
+  return html;
+}
+
+function searchResults() {
+  const q = state.q.trim().toLowerCase();
+  if (q.length < 2) return '<div class="hint">두 글자 이상 입력하세요. 제목·저자·키워드·초록 본문까지 찾습니다.</div>';
+  const hits = searchItems.filter(it => it.head.includes(q) || it.body.includes(q));
+  const MAX = 100;
+  const cards = hits.slice(0, MAX).map(({ talk, abs }) => {
+    // 제목·저자에 없고 본문에서만 찾았으면, 본문 일부를 함께 보여 준다
+    const inHead = (talk?.title + " " + talk?.first_author + " " + abs?.title).toLowerCase().includes(q);
+    const extra = !inHead && abs ? `<div class="snippet">${snippet(abs.abstract, q) || highlight([...abs.authors, ...abs.keywords].join(", "), q)}</div>` : "";
+    return talk ? talkCard(talk, { q, showDay: true, extra }) : abstractCard(abs, { q, extra });
+  }).join("");
+  return `<div class="count">${hits.length}건${hits.length > MAX ? ` (앞 ${MAX}건만 표시)` : ""}</div>${cards || '<div class="empty">결과가 없습니다.</div>'}`;
+}
+
+function viewSearch() {
+  return `
+    <div class="searchbar"><input type="search" id="q" placeholder="제목, 저자, 키워드, 초록 본문" value="${esc(state.q)}" autocomplete="off"></div>
+    <div id="results">${searchResults()}</div>`;
+}
+
+// 같은 날 북마크를 시작 시각 순으로 훑으며, 앞선 발표가 끝나기 전에 시작하면 겹침
+function findClashes(talks) {
+  const clash = new Set();
+  let latestEnd = "", latestId = null;
+  for (const t of talks) {
+    if (t.time_start < latestEnd) { clash.add(t.id); clash.add(latestId); }
+    if (t.time_end > latestEnd) { latestEnd = t.time_end; latestId = t.id; }
+  }
+  return clash;
+}
+
+function viewMy() {
+  const mine = DATA.talks.filter(t => bookmarks.has(t.id));
+  let html = `<h1 class="page-h">내 일정 ${mine.length}건</h1>`;
+  if (!mine.length) html += '<div class="empty">아직 북마크한 발표가 없습니다. 발표 옆 ☆ 를 눌러 보세요.</div>';
+  for (const day of DATA.meta.days) {
+    const list = mine.filter(t => t.date === day);
+    if (!list.length) continue;
+    const clash = findClashes(list);
+    html += `<h2 class="day-h">${esc(dayLabel[day])} · ${list.length}건${clash.size ? ` · <span class="clash-badge">겹침 ${clash.size}</span>` : ""}</h2>`;
+    html += list.map(t => talkCard(t, { clash: clash.has(t.id) })).join("");
+  }
+  html += `
+    <div class="tools">
+      <div class="hint">북마크는 이 브라우저에만 저장됩니다. 다른 PC·브라우저로 옮기려면 파일로 내보내세요.</div>
+      <div class="tools-row">
+        <button class="btn" id="export">⬇ 내보내기 (JSON)</button>
+        <label class="btn">⬆ 불러오기<input type="file" id="import" accept=".json,application/json" hidden></label>
+        ${mine.length ? '<button class="btn danger" id="clear">모두 지우기</button>' : ""}
+      </div>
+      ${state.msg ? `<div class="msg">${esc(state.msg)}</div>` : ""}
+    </div>`;
+  state.msg = "";
+  return html;
+}
+
+// ───────────────────────── 5. 라우팅 (location.hash) ─────────────────────────
+// 주소 끝의 #/talk/12 같은 부분으로 어떤 화면을 그릴지 정한다.
+// hash 를 쓰면 file:// 로 연 HTML 에서도 뒤로가기·새로고침·즐겨찾기가 동작한다.
+const scrollMemo = {};
+let currentHash = "";
+
+function route() {
+  scrollMemo[currentHash] = window.scrollY;
+  currentHash = location.hash || "#/program";
+  const [, page, arg] = currentHash.split("/");
+  const id = Number(arg);
+  const view = {
+    program: viewProgram,
+    sessions: viewSessions,
+    session: () => viewSession(decodeURIComponent(arg || "")),
+    search: viewSearch,
+    my: viewMy,
+    talk: () => { const t = talkById.get(id); return viewDetail(t, abstractById.get(t?.abstract_id)); },
+    abstract: () => viewDetail(null, abstractById.get(id)),
+  }[page] || viewProgram;
+  document.getElementById("view").innerHTML = view();
+
+  const tab = { session: "sessions", talk: null, abstract: null }[page] ?? page;
+  document.querySelectorAll(".tab").forEach(a => a.classList.toggle("on", a.dataset.tab === tab));
+  window.scrollTo(0, scrollMemo[currentHash] || 0);
+  if (page === "search" && !state.q) document.getElementById("q").focus();
+}
+
+// 같은 화면을 다시 그린다 (북마크·칩을 바꿨을 때, 스크롤 위치 유지)
+function rerender() {
+  const y = window.scrollY;
+  scrollMemo[currentHash] = y;
+  currentHash = "";       // route() 가 이전 위치를 덮어쓰지 않도록
+  route();
+  window.scrollTo(0, y);
+}
+
+// ───────────────────────── 6. 이벤트 ─────────────────────────
+// #view 안의 내용은 계속 바뀌므로, 클릭은 #view 에 한 번만 걸고 e.target 으로 구분한다 (이벤트 위임)
+const viewEl = document.getElementById("view");
+
+viewEl.addEventListener("click", e => {
+  const bm = e.target.closest(".bm");
+  if (bm) { toggleBookmark(Number(bm.dataset.id)); rerender(); return; }
+
+  const chip = e.target.closest(".chip");
+  if (chip) { state[chip.parentElement.dataset.set] = chip.dataset.v; rerender(); return; }
+
+  const kw = e.target.closest(".kwchip");
+  if (kw) { state.q = kw.dataset.kw; location.hash = "#/search"; return; }
+
+  if (e.target.closest("[data-back]")) {
+    if (history.length > 1) history.back(); else location.hash = "#/program";
+    return;
+  }
+  if (e.target.id === "export") exportBookmarks();
+  if (e.target.id === "clear" && confirm("북마크를 모두 지울까요?")) {
+    bookmarks.clear(); saveBookmarks(); rerender();
+  }
+});
+
+// 검색창: 입력할 때마다 결과 부분만 다시 그린다 (입력창을 다시 만들면 커서가 사라진다)
+viewEl.addEventListener("input", e => {
+  if (e.target.id !== "q") return;
+  state.q = e.target.value;
+  document.getElementById("results").innerHTML = searchResults();
+});
+
+viewEl.addEventListener("change", e => {
+  if (e.target.id === "import" && e.target.files[0]) importBookmarks(e.target.files[0]);
+});
+
+function exportBookmarks() {
+  const payload = { app: DATA.meta.name, exported: new Date().toISOString(), bookmarks: [...bookmarks] };
+  const blob = new Blob([JSON.stringify(payload, null, 1)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "bookmarks.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function importBookmarks(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      const ids = (Array.isArray(data) ? data : data.bookmarks).map(Number).filter(id => talkById.has(id));
+      const before = bookmarks.size;
+      ids.forEach(id => bookmarks.add(id));
+      state.msg = `${ids.length}건 중 ${bookmarks.size - before}건을 새로 추가했습니다.` + (saveBookmarks() ? "" : " (브라우저 저장이 막혀 있어 이번 화면에서만 유지됩니다)");
+    } catch (err) {
+      state.msg = "불러오기 실패: 올바른 bookmarks.json 파일이 아닙니다.";
+    }
+    rerender();
+  };
+  reader.readAsText(file);
+}
+
+window.addEventListener("hashchange", route);
+
+// ───────────────────────── 7. 시작 ─────────────────────────
+document.title = `${DATA.meta.name} 프로그램`;
+document.getElementById("brand").textContent = `${DATA.meta.name} 프로그램`;
+document.getElementById("brand-sub").textContent =
+  `${DATA.meta.place} · ${dayLabel[DATA.meta.days[0]]} – ${dayLabel[DATA.meta.days.at(-1)]}`;
+// 학회 기간 중이면 오늘 날짜를 기본으로 보여 준다
+const today = new Date().toISOString().slice(0, 10);
+if (DATA.meta.days.includes(today)) state.day = today;
+route();
+</script>
+</body>
+</html>
