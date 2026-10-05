@@ -184,7 +184,8 @@ md("""
 | `abstracts` | 초록 | `id`, `session`, `title`, `authors[]`, `affiliations[]`, `abstract`, `keywords[]` |
 
 발표와 초록은 `talks[i].abstract_id` ↔ `abstracts[j].id` 로 연결됩니다.
-`abstract_id` 가 비어 있는(`None`) 발표도 있습니다(기조강연 등). 표로 보면 훨씬 알아보기 쉽습니다.
+`abstract_id` 가 비어 있는(`None`) 발표도 있습니다(워크숍 등). 포스터처럼 발표 일정이 없는 초록도 있고,
+데이터에 따라 초록 본문(`abstract`)이 비어 있을 수 있습니다. 표로 보면 훨씬 알아보기 쉽습니다.
 """)
 code('''
 import pandas as pd

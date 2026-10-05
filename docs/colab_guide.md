@@ -76,7 +76,7 @@
 **방법 A — 파일 업로드**
 1. 데이터 셀을 실행하면 **파일 선택** 버튼이 나옵니다.
 2. 미리 받아 둔 `conference.json` 을 고릅니다.
-3. `sessions 30, talks 457 …` 처럼 개수가 출력되면 성공.
+3. `sessions …, talks …, abstracts …` 처럼 개수가 출력되면 성공.
 
 **방법 B — 구글 드라이브 연결**
 1. 드라이브 셀을 실행하면 권한 창이 뜹니다 → 내 계정 선택 → **허용**.
@@ -99,7 +99,8 @@
 | `abstracts` | 초록 | `id`, `session`, `title`, `authors[]`, `affiliations[]`, `abstract`, `keywords[]` |
 
 - 발표(`talks`)와 초록(`abstracts`)은 `talks[i].abstract_id` ↔ `abstracts[j].id` 로 연결됩니다.
-  `abstract_id` 가 비어 있는(`None`) 발표도 있습니다(기조강연 등).
+  `abstract_id` 가 비어 있는(`None`) 발표도 있습니다(워크숍 등).
+  포스터처럼 발표 일정이 없는 초록도 있고, 데이터에 따라 초록 본문(`abstract`)이 비어 있을 수 있습니다.
 - 셀을 실행해 표(DataFrame)로 보고, 날짜별·장소별 발표 수를 세어 보세요.
 
 ---

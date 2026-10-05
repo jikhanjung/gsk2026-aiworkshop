@@ -11,7 +11,8 @@
 ## 구성
 
 ```
-data/conference.json       실습 데이터 (git 미추적, scripts/prepare_data.py 로 생성)
+data/conference.json       실습 데이터 (git 미추적, scripts/parse_program_book.py 로 생성)
+data/src/                  원본 PDF (git 미추적) — gsk2025_program_book.pdf
 steps/step2_list.html      Step 2  JS 로 목록 그리기
 steps/step3_filter.html    Step 3  날짜·장소 필터, 검색 (state + render)
 steps/step4_bookmark.html  Step 4  ☆ 북마크(localStorage), 내 일정, 시간 겹침
@@ -41,12 +42,20 @@ docs/colab_guide.md        학생용 Colab 안내서
 - 시간은 반드시 `HH:MM` **두 자리**로 맞춥니다. 시간 겹침 계산과 정렬이 문자열 비교에 기대고 있습니다.
 - `talks` 는 날짜·시작 시각 순으로 정렬해 둡니다 (내 일정·겹침 계산이 이 순서를 씁니다).
 - `room` 은 비우지 않습니다 (장소 필터). 초록이 없는 발표는 `abstract_id: null`.
-- 지금 데이터는 **임시본**입니다. 실제 학회 프로그램이 나오면 같은 스키마로 다시 만들고 `python scripts/check.py` 로 확인하세요.
-- 초록 본문이 들어 있으므로 **공개 저장소·웹에 올리지 않습니다** (`data/`, `dist/` 는 `.gitignore`).
+- 지금 데이터는 **2025 추계지질과학연합학술대회 프로그램북**(대한지질학회 공지 게시판 첨부 PDF)에서 뽑은 것입니다.
+  구두발표 382건(특별강연 등 plenary 5), 포스터 229건(P001–P209, 차세대 Y001–Y020), 세션 38개, 3일 · 9개 발표장.
+  - 프로그램북엔 **초록 본문이 없어서** `abstract`·`keywords`·`affiliations` 는 빈 값이고, 저자 목록만 있습니다.
+    초록집 PDF 는 학회 회원 로그인이 있어야 내려받을 수 있습니다.
+  - 포스터는 발표 시각이 없으므로 `talks` 가 아니라 **일정 없는 `abstracts`**(제목 앞 `[P001]`)로 넣었습니다.
+  - 휴식·중식·개회식·총회처럼 제목 없는 칸은 뺐습니다. 원문 시간 오타 1건(`12:00-15:15`)은 다음 발표 시작으로 보정합니다.
+- 2026 프로그램북이 나오면(10월 중순 예상) `data/src/` 에 넣고 같은 파서를 돌린 뒤 `python scripts/check.py` 로 확인하세요.
+  쪽 배치가 바뀌었으면 `scripts/parse_program_book.py` 머리 주석의 좌표·글자 크기 규칙을 고칩니다.
+- 학회 자료이므로 **공개 저장소·웹에 올리지 않습니다** (`data/`, `dist/` 는 `.gitignore`).
 
 ## 수업 전 준비 (강사)
 
-1. 데이터 만들기: `python scripts/prepare_data.py` → `data/conference.json`
+1. 데이터 만들기: 프로그램북 PDF 를 `data/src/` 에 두고
+   `python scripts/parse_program_book.py [PDF]` → `data/conference.json` (`pip install pymupdf` 필요)
 2. 노트북 만들기: `python scripts/make_notebook.py` → `gsk2026_practice.ipynb`
 3. 검증: `python scripts/check.py` (아래 "검증" 참고)
 4. 노트북을 드라이브에 올리고 Colab 으로 열어 **위에서부터 끝까지 한 번 실행**해 봅니다.

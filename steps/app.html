@@ -297,7 +297,7 @@ function viewDetail(talk, abs) {
     return html + `<p class="detail-authors">${esc(talk.first_author)}</p><p class="empty">연결된 초록이 없습니다.</p>`;
   }
   html += `<p class="detail-authors">${abs.authors.map(esc).join(", ")}</p>`;
-  if (abs.abstract) html += `<div class="detail-abstract">${esc(abs.abstract)}</div>`;
+  html += abs.abstract ? `<div class="detail-abstract">${esc(abs.abstract)}</div>` : '<p class="hint">초록 본문이 없습니다.</p>';
   if (abs.keywords.length) {
     html += `<div class="kw">${abs.keywords.map(k => `<button class="kwchip" data-kw="${esc(k)}">${esc(k)}</button>`).join("")}</div>`;
   }

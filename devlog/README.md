@@ -16,3 +16,4 @@
 | **실습 설계 + 데이터 준비** | **P01** colab_webapp_practice_plan(계획: PDF 파싱 제외, JSON → 단일 HTML, 단계 구성) · 001 project_setup_and_data (strati2026 산출물 → `data/conference.json`, Step 2·3 템플릿) | 10/6 |
 | **학생용 안내서** | 002 colab_guide (`docs/colab_guide.md`: 단계별 안내·주의사항·문제 해결·강사 체크리스트) | 10/6 |
 | **실습 자료 완성** | 003 step4_app_build (Step 4 북마크·내 일정, 완성본 `steps/app.html`, `build.py`, 시간 두 자리 정규화) · 004 notebook_check_readme (노트북 생성기·안내서 정렬, `check.py`/jsdom 스모크 테스트, README) | 10/6 |
+| **GSK 데이터** | 005 gsk2025_program_book_data (2026 프로그램북 미공개 → 2025 프로그램북 PDF 파싱 `scripts/parse_program_book.py`, 구두 382·포스터 229) | 10/6 |

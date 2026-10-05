@@ -103,23 +103,38 @@ function type(win, el, value) { el.value = value; el.dispatchEvent(new win.Event
     check("app: 세션 상세", view().querySelectorAll(".talk").length > 0 && view().textContent.includes(session.title));
 
     const data = DATA;
-    const withAbs = data.talks.find(t => t.abstract_id);
+    // 초록 본문이 있는 발표를 우선 고른다 (프로그램북 데이터는 본문 없이 저자만 있을 수 있음)
+    const absOf = t => DATA.abstracts.find(a => a.id === t.abstract_id);
+    const withAbs = data.talks.find(t => t.abstract_id && absOf(t).abstract) || data.talks.find(t => t.abstract_id);
+    const abs = absOf(withAbs);
     await go("#/talk/" + withAbs.id);
-    check("app: 발표 상세 + 초록", !!view().querySelector(".detail-abstract") && !!view().querySelector(".kw"));
+    check("app: 발표 상세 + 저자", view().querySelector(".detail-authors")?.textContent.includes(abs.authors[0]));
+    check("app: 초록 본문·키워드 (있을 때)",
+      !!view().querySelector(".detail-abstract") === !!abs.abstract && !!view().querySelector(".kw") === abs.keywords.length > 0);
     click(win, view().querySelector(".bm"));
     check("app: 상세에서 북마크", view().querySelector(".bm").classList.contains("on"));
 
     const noAbs = data.talks.find(t => !t.abstract_id);
-    await go("#/talk/" + noAbs.id);
-    check("app: 초록 없는 발표", view().textContent.includes("연결된 초록이 없습니다"));
+    if (noAbs) {
+      await go("#/talk/" + noAbs.id);
+      check("app: 초록 없는 발표", view().textContent.includes("연결된 초록이 없습니다"));
+    }
     await go("#/talk/999999");
     check("app: 없는 발표 id", view().textContent.includes("찾을 수 없습니다"));
-    await go("#/abstract/" + DATA.abstracts[0].id);
-    check("app: 초록 단독 상세", !!view().querySelector(".detail-abstract"));
+    const linked = new Set(DATA.talks.map(t => t.abstract_id));
+    const lone = DATA.abstracts.find(a => !linked.has(a.id)) || DATA.abstracts[0];
+    await go("#/abstract/" + lone.id);
+    check("app: 초록 단독 상세", view().querySelector(".detail-title")?.textContent === lone.title);
 
     await go("#/search");
-    type(win, doc.getElementById("q"), bodyOnly);   // 초록 본문에만 있는 단어
-    check("app: 본문 검색 + 스니펫", view().querySelectorAll("#results .snippet mark").length > 0, `"${bodyOnly}" ` + view().querySelector(".count")?.textContent);
+    if (bodyOnly) {
+      type(win, doc.getElementById("q"), bodyOnly);   // 초록 본문에만 있는 단어
+      check("app: 본문 검색 + 스니펫", view().querySelectorAll("#results .snippet mark").length > 0, `"${bodyOnly}" ` + view().querySelector(".count")?.textContent);
+    } else console.log("  skip app: 본문 검색 (초록 본문 없는 데이터)");
+    if (lone.authors.length) {
+      type(win, doc.getElementById("q"), lone.authors.at(-1));   // 일정 없는 초록(포스터)도 저자로 찾아진다
+      check("app: 일정 없는 초록 검색", [...view().querySelectorAll("#results .talk-title")].some(a => a.textContent === lone.title));
+    }
     type(win, doc.getElementById("q"), "a<b");
     check("app: 특수문자 검색 안전", errors.length === 0);
     type(win, doc.getElementById("q"), twoChars);

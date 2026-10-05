@@ -4,7 +4,7 @@
 학생 실습 자료. **미리 만든 학회 JSON** 을 주고, 학생들이 **Google Colab** 에서
 파이썬으로 JSON 을 HTML 템플릿에 넣어 **단일 HTML 파일**을 만들고 → `files.download()` 로
 내려받아 → 자기 PC 브라우저에서 열어 쓰는 과정을 단계별로 실습한다.
-(PDF 파싱은 실습 범위 밖. 데이터는 strati2026 프로젝트 산출물을 재가공해 사용.)
+(PDF 파싱은 실습 범위 밖 — 강사 준비 작업. 데이터는 대한지질학회 프로그램북 PDF 를 파싱해 사용.)
 
 ## 설계 결정 (사용자와 합의됨)
 - 결과물은 **HTML 파일 하나**. 데이터는 `<script>const DATA = __DATA__;</script>` 자리에
@@ -19,8 +19,11 @@
 
 ## 데이터 (git 미추적)
 - `data/` 는 `.gitignore` 대상 — 초록 본문 등 재배포 불가 데이터. 스크립트로 다시 만든다.
-- **지금 `data/conference.json` 은 임시 데이터**(strati2026 산출물 재가공, `scripts/prepare_data.py`).
-  GSK 2026(대한지질학회) 프로그램이 나오면 그 PDF 를 파싱해 **같은 스키마**로 다시 만든다.
+- **지금 `data/conference.json` 은 2025 추계학술대회 프로그램북**(`data/src/gsk2025_program_book.pdf`)을
+  `scripts/parse_program_book.py`(pymupdf)로 파싱한 것. 프로그램북엔 초록 본문이 없어 abstract/keywords/affiliations 는 빈 값,
+  포스터는 일정 없는 abstracts 로 들어간다. (초록집 PDF 는 회원 로그인 필요)
+  (`scripts/prepare_data.py` 는 이전 임시 데이터(strati2026) 변환기 — 참고용)
+  GSK 2026 프로그램북이 나오면(10월 중순 예상) 같은 파서로 **같은 스키마**로 다시 만든다.
   → 템플릿·노트북은 특정 학회(STRATI)에 묶이지 않게 `DATA.meta` 와 스키마 필드만 쓸 것.
   (학회명·장소·날짜 하드코딩 금지, 장소/세션 목록도 데이터에서 뽑기)
 
@@ -35,7 +38,7 @@
 
 ## 현재 상태
 (자세한 진행 상황·다음 할 일은 `HANDOFF.md`)
-- [x] `scripts/prepare_data.py` → `data/conference.json` (임시본, 시간은 `HH:MM` 두 자리로 정규화)
+- [x] `scripts/parse_program_book.py` → `data/conference.json` (2025 프로그램북: 구두 382, 포스터 229, 세션 38)
 - [x] `steps/step2_list.html`, `step3_filter.html`, `step4_bookmark.html`, `app.html`(Step 5 완성본)
 - [x] `build.py` — `python build.py steps/app.html data/conference.json dist/conference.html`
 - [x] `scripts/make_notebook.py` → `gsk2026_practice.ipynb` (`docs/colab_guide.md` 와 단계명·파일명 일치).
