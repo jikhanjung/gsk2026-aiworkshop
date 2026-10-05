@@ -6,13 +6,22 @@
 
 - 실습 자료 1차 완성 (devlog 003, 004). CLAUDE.md 의 작업 1~6 완료.
   - 템플릿 `steps/step2_list` · `step3_filter` · `step4_bookmark` · `app`(Step 5 완성본)
-  - `build.py`, `scripts/make_notebook.py` → `gsk2026_practice.ipynb` (docs/colab_guide.md 와 단계명·파일명 일치)
+  - `build.py`, `scripts/make_notebook.py` → `gsk2026_practice.ipynb` (docs/reference_notebook_guide.md 와 단계명·파일명 일치)
   - 검증 `python scripts/check.py` 전부 통과 (jsdom 스모크 테스트 31개 포함, `NODE_PATH` 필요)
   - `README.md` 강사용 안내
 - **데이터를 2025 GSK 추계학술대회 프로그램북으로 교체** (devlog 005): `scripts/parse_program_book.py` →
   구두 382 / 포스터 229 / 세션 38. 초록 본문 없음(초록집은 회원 로그인 필요). 원본 PDF 는 `data/src/`(git 미추적).
 
+## 수업 방식 변경 (devlog 006)
+
+- **AI 활용 수업**: 학생은 Colab Gemini 에게 프롬프트로 노트북을 구성. 모범 답안 노트북은 마지막에 공개.
+- 문서: `docs/gemini_practice_guide.md`(학생), `docs/instructor_guide.md`(강사),
+  `docs/reference_notebook_guide.md`(구 colab_guide — 모범 답안 안내서로 전환).
+
 ## 다음 할 일
+
+0. **강사가 Gemini in Colab 으로 전 과정을 직접 한 번 해 보기** — 안내서의 UI 설명·프롬프트 예시·"Gemini 가 자주 하는 실수" 표가
+   실제와 맞는지 확인 (현재 내용은 실제 Gemini 로 검증하지 않은 예상치).
 
 1. **Colab 실제 실행 확인** — 노트북을 드라이브에 올려 처음부터 끝까지: `preview()` iframe, `files.download()`,
    방법 B(드라이브 마운트). 로컬에선 Colab 전용 부분을 검증할 수 없었음.
@@ -23,8 +32,8 @@
 
 ## 결정 사항
 
-- git 저장소: **public** `github.com/jikhanjung/gsk2026` (main). `data/`, `dist/` 는 `.gitignore` — 학회 데이터는 절대 커밋하지 말 것.
-- 학생은 Colab 에서 바로 열 수 있음: `https://colab.research.google.com/github/jikhanjung/gsk2026/blob/main/gsk2026_practice.ipynb`
+- git 저장소: **public** `github.com/jikhanjung/gsk2026-aiworkshop` (main). `data/`, `dist/` 는 `.gitignore` — 학회 데이터는 절대 커밋하지 말 것.
+- 학생은 Colab 에서 바로 열 수 있음: `https://colab.research.google.com/github/jikhanjung/gsk2026-aiworkshop/blob/main/gsk2026_practice.ipynb`
 - 지금 데이터는 2025 프로그램북. GSK 2026 프로그램북이 나오면 같은 파서로 다시 만든다.
 
 ## GSK 2026 학술대회 정보 (2026-10-06 조사)

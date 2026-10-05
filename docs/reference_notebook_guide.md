@@ -1,4 +1,9 @@
-# Colab 실습 안내서 — 학회 프로그램 웹앱 만들기
+# 모범 답안 노트북 안내서 — 학회 프로그램 웹앱 만들기
+
+> **수업 마지막에 공개하는 문서입니다.** 수업 본 과정은 학생이 Colab 의 Gemini 와 대화하며 직접 노트북을
+> 구성하는 방식이고([`gemini_practice_guide.md`](gemini_practice_guide.md)), 이 문서는 강사가 미리 만든
+> 모범 답안 노트북 `gsk2026_practice.ipynb` 를 따라가며 **내가 만든 것과 비교**할 때 씁니다.
+> 노트북 링크: https://colab.research.google.com/github/jikhanjung/gsk2026-aiworkshop/blob/main/gsk2026_practice.ipynb
 
 학회 발표 데이터(JSON)를 받아 **Google Colab** 에서 웹앱 HTML 파일을 만들고, 내려받아
 **내 PC 브라우저에서 직접 써 보는** 실습입니다. 마지막에는 아래 기능을 갖춘 HTML 파일 하나가 남습니다.

@@ -1,9 +1,12 @@
 # gsk2026 — 학회 프로그램 로컬 웹앱 만들기 실습
 
 ## 목적
-학생 실습 자료. **미리 만든 학회 JSON** 을 주고, 학생들이 **Google Colab** 에서
-파이썬으로 JSON 을 HTML 템플릿에 넣어 **단일 HTML 파일**을 만들고 → `files.download()` 로
-내려받아 → 자기 PC 브라우저에서 열어 쓰는 과정을 단계별로 실습한다.
+GSK 2026 AI 워크숍 학생 실습 자료 (GitHub: `jikhanjung/gsk2026-aiworkshop`, public).
+**AI 활용 수업**: 학생은 빈 Colab 노트북에서 **Gemini 에게 프롬프트를 입력하며** 미리 만든 학회 JSON 으로
+**단일 HTML 파일** 학회 시간표 앱을 만들고 → 내려받아 → 자기 PC 브라우저에서 쓴다.
+- 학생용: `docs/gemini_practice_guide.md` (완성 기준 9개·프롬프트 예시·Gemini 실수 패턴). 강사용: `docs/instructor_guide.md`.
+- 이 저장소의 템플릿·노트북(`gsk2026_practice.ipynb`)은 **모범 답안** — 수업 마지막에 공개해 비교용으로 쓴다
+  (`docs/reference_notebook_guide.md`). 노트북을 처음부터 주지 않는다.
 (PDF 파싱은 실습 범위 밖 — 강사 준비 작업. 데이터는 대한지질학회 프로그램북 PDF 를 파싱해 사용.)
 
 ## 설계 결정 (사용자와 합의됨)
@@ -41,7 +44,7 @@
 - [x] `scripts/parse_program_book.py` → `data/conference.json` (2025 프로그램북: 구두 382, 포스터 229, 세션 38)
 - [x] `steps/step2_list.html`, `step3_filter.html`, `step4_bookmark.html`, `app.html`(Step 5 완성본)
 - [x] `build.py` — `python build.py steps/app.html data/conference.json dist/conference.html`
-- [x] `scripts/make_notebook.py` → `gsk2026_practice.ipynb` (`docs/colab_guide.md` 와 단계명·파일명 일치).
+- [x] `scripts/make_notebook.py` → `gsk2026_practice.ipynb` (`docs/reference_notebook_guide.md` 와 단계명·파일명 일치).
       템플릿 원본은 steps/*.html — 고치면 노트북 재생성.
 - [x] 검증 `scripts/check.py` (+ `scripts/smoke_test.js`, jsdom 은 NODE_PATH 로)
 - [x] `README.md` (강사용)

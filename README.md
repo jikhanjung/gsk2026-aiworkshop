@@ -1,11 +1,16 @@
-# 학회 프로그램 웹앱 만들기 실습
+# 학회 프로그램 웹앱 만들기 — AI 활용 실습 (GSK 2026 AI 워크숍)
 
-학회 프로그램 데이터(JSON)를 **Google Colab** 에서 파이썬으로 HTML 템플릿에 넣어
-**HTML 파일 하나짜리 웹앱**을 만들고, 내려받아 내 PC 브라우저에서 쓰는 실습 자료입니다.
-대상은 프로그래밍 초보~중급 학생입니다.
+학생들이 **Google Colab 의 Gemini 에게 프롬프트를 입력하며** 학회 프로그램 데이터(JSON)로
+**HTML 파일 하나짜리 학회 시간표 앱**을 만들고, 내려받아 내 PC 브라우저에서 쓰는 실습 자료입니다.
+학생은 빈 노트북에서 시작하고, 강사가 미리 만든 **모범 답안 노트북**은 수업 마지막에 공개해 비교합니다.
 
-- 학생용 안내서: [`docs/colab_guide.md`](docs/colab_guide.md)
-- 실습 노트북: `gsk2026_practice.ipynb` (`scripts/make_notebook.py` 로 생성)
+| 문서 | 대상 | 시점 |
+|------|------|------|
+| [`docs/gemini_practice_guide.md`](docs/gemini_practice_guide.md) — 완성 기준·프롬프트 예시·주의사항 | 학생 | 수업 시작 |
+| [`docs/instructor_guide.md`](docs/instructor_guide.md) — 수업 운영·점검·개입 힌트·평가 기준 | 강사 | 수업 전 |
+| [`docs/reference_notebook_guide.md`](docs/reference_notebook_guide.md) + `gsk2026_practice.ipynb` — 모범 답안 | 학생 | 수업 마지막 |
+
+- 모범 답안 노트북 Colab 링크: https://colab.research.google.com/github/jikhanjung/gsk2026-aiworkshop/blob/main/gsk2026_practice.ipynb
 - 설계 결정·규칙: [`CLAUDE.md`](CLAUDE.md) · 진행 상황: [`HANDOFF.md`](HANDOFF.md) · 개발 기록: [`devlog/`](devlog/README.md)
 
 ## 구성
@@ -21,7 +26,9 @@ build.py                   템플릿 + JSON → 단일 HTML (로컬용, 노트�
 scripts/make_notebook.py   steps/*.html 을 %%writefile 셀로 넣어 노트북 생성
 scripts/check.py           전체 검증 (빌드, JS 문법, 노트북, 렌더 스모크 테스트)
 scripts/smoke_test.js      jsdom 렌더 스모크 테스트 (check.py 가 호출)
-docs/colab_guide.md        학생용 Colab 안내서
+docs/gemini_practice_guide.md     학생용 Gemini 실습 안내서
+docs/instructor_guide.md          강사용 수업 운영 안내
+docs/reference_notebook_guide.md  모범 답안 노트북 안내서 (수업 마지막 공개)
 ```
 
 템플릿은 모두 `const DATA = __DATA__;` 한 자리를 가지고 있고, 파이썬이 그 자리에 JSON 을 넣습니다
@@ -54,6 +61,9 @@ docs/colab_guide.md        학생용 Colab 안내서
 
 ## 수업 전 준비 (강사)
 
+수업 운영·점검 항목은 [`docs/instructor_guide.md`](docs/instructor_guide.md). 아래는 자료를 만드는 절차와,
+모범 답안 노트북을 학생들이 바로 따라 할 수 있게 준비하는 절차입니다.
+
 1. 데이터 만들기: 프로그램북 PDF 를 `data/src/` 에 두고
    `python scripts/parse_program_book.py [PDF]` → `data/conference.json` (`pip install pymupdf` 필요)
 2. 노트북 만들기: `python scripts/make_notebook.py` → `gsk2026_practice.ipynb`
@@ -61,7 +71,7 @@ docs/colab_guide.md        학생용 Colab 안내서
 4. 노트북을 드라이브에 올리고 Colab 으로 열어 **위에서부터 끝까지 한 번 실행**해 봅니다.
    특히 `preview()` 미리보기가 실습실 네트워크에서 뜨는지, `download()` 가 되는지 확인.
 5. 노트북 공유 링크는 **보기 전용**으로. 학생은 "드라이브에 사본 저장" 후 작업합니다.
-6. 데이터 배포 방법을 정합니다 (`docs/colab_guide.md` §3-2).
+6. 데이터 배포 방법을 정합니다 (`docs/reference_notebook_guide.md` §3-2, `docs/gemini_practice_guide.md` §2).
    - **방법 A 업로드**: `conference.json` 을 메신저·LMS 로 나눠 주고 학생이 업로드. 가장 단순.
    - **방법 B 드라이브**: 공유 폴더에 두고 학생이 "내 드라이브에 바로가기 추가" → 노트북의 `DATA_PATH` 수정.
      드라이브 권한 창이 한 번 더 나오므로 시간이 조금 더 걸립니다.
@@ -69,9 +79,11 @@ docs/colab_guide.md        학생용 Colab 안내서
 7. 실습실 PC 에서 *Chrome 다운로드 → 로컬 HTML 더블클릭 → 북마크 후 다시 열기* 를 미리 해 봅니다
    (보안 정책으로 다운로드나 로컬 파일 JS 가 막힌 곳이 있음).
 
-`docs/colab_guide.md` 끝의 강사용 체크리스트도 함께 보세요.
+`docs/instructor_guide.md` 의 "수업 전 점검" 도 함께 보세요.
 
-## 수업 진행 (예: 3시간)
+## (대안) 모범 답안 노트북으로 강의식 진행 (예: 3시간)
+
+기본 수업 방식(Gemini 실습)의 진행표는 `docs/instructor_guide.md`. 아래는 모범 답안 노트북을 처음부터 같이 따라가는 강의식 진행입니다.
 
 | 시간 | 단계 | 포인트 |
 |---|---|---|
