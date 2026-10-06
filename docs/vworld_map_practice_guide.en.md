@@ -355,5 +355,5 @@ More things to try:
 | Only certain areas are empty | Area with no 1:50,000 map sheet → switch to 1:250,000 |
 | So dark the base map can't be seen | "Make the geological map more transparent" |
 
-> Reference sample: the `KIGAM_KEY` part of `examples/vworld_map_sample.html` (a geological map menu appears once you add the key).
+> Reference sample: the `KIGAM_KEY` part of `examples/vworld_map_sample.en.html` (a geological map menu appears once you add the key).
 > The KIGAM WMS usage in this document is based on the official guide pages and **has not yet been tested with a real key.**

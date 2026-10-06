@@ -11,7 +11,7 @@ GSK 2026 AI 워크숍 학생 실습 자료 (GitHub: `jikhanjung/gsk2026-aiworksh
 - **실습 순서: 실습 1 = 브이월드 지도 앱(더 단순, 먼저), 실습 2 = Conference Organizer.**
 - **실습 1 — 브이월드 지도 앱**: 같은 방식으로 Leaflet + 브이월드 WMTS 배경지도에 지점을 기록하는 HTML 앱.
   학생이 브이월드 인증키를 발급받아 **Colab 보안 비밀(`VWORLD_KEY`)** 로 넣는 과정이 핵심. 이 앱은 인터넷 필요(Leaflet CDN 허용).
-  문서: `docs/vworld_map_practice_guide.md`(학생), `docs/vworld_map_instructor_guide.md`(강사), 샘플 `examples/vworld_map_sample.html`.
+  문서: `docs/vworld_map_practice_guide.md`(학생), `docs/vworld_map_instructor_guide.md`(강사), 샘플 `examples/vworld_map_sample.html`(한국어 화면)·`vworld_map_sample.en.html`(영어 화면) — 고치면 둘 다.
   WMTS 주소: `https://api.vworld.kr/req/wmts/1.0.0/{키}/{Base|white|midnight|Hybrid(png)|Satellite(jpeg)}/{z}/{y}/{x}` (y 가 먼저).
 
 ## 설계 결정 (사용자와 합의됨)

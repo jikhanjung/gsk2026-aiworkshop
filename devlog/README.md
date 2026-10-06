@@ -25,3 +25,4 @@
 | **쉬운 말 프롬프트 · 앱 이름** | 011 plain_prompts_and_conference_organizer (학생 안내서 프롬프트를 비전공자 말투로, 참고 카드 분리, 실수 표 재구성 / 시간표 앱 = Conference Organizer, 안내서 파일명 변경) | 10/6 |
 | **영어판** | 012 english_docs (README·docs 5개 `.en.md`, 언어 전환 줄, 한국어 문서 수정 시 영어판 동반 규칙) | 10/6 |
 | **노트북 한/영** | 013 bilingual_notebook (모범 답안 노트북 설명 셀·코드 주석·메시지, steps 템플릿 주석 한/영 병기) | 10/6 |
+| **샘플 영어판** | 014 english_sample_html (`examples/vworld_map_sample.en.html`, 영어 문서는 영어 샘플을 가리킴) | 10/6 |

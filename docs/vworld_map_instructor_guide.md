@@ -18,7 +18,7 @@
 |------------------|------|
 | 인증키 발급 안내(학생용 안내서 §2-1) + **서비스 URL 에 적을 값** | **수업 1주 전** (과제) |
 | `docs/vworld_map_practice_guide.md` | 수업 시작 |
-| 참고 샘플 `examples/vworld_map_sample.html` (선택) | 수업 마지막 |
+| 참고 샘플 `examples/vworld_map_sample.html` (영어 화면판 `vworld_map_sample.en.html`) (선택) | 수업 마지막 |
 
 ---
 
@@ -142,6 +142,8 @@ Colab 미리보기는 Colab 쪽 주소에서 열린다. **배경지도 WMTS 가 
 ---
 
 ## 참고 샘플 `examples/vworld_map_sample.html`
+
+(영어 화면판: `examples/vworld_map_sample.en.html` — 코드는 같고 글자만 다름.)
 
 Gemini + Colab 으로 만든 지도 앱 예시. 기능: 브이월드 기본지도, 클릭해 지점 추가, **입력 필드 직접 설정(스키마 관리)**,
 localStorage 저장, JSON 내보내기/가져오기(덮어쓰기·병합 선택). 수업 마지막 비교·토론용으로 쓰기 좋은 지점:

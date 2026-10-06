@@ -17,7 +17,7 @@
 | 심화 | **KIGAM 지질도 오버레이** (키 승인 필요 → 사전 신청 또는 수업 후 과제) | 세션별 보기, 상세 화면, 북마크 내보내기 등 |
 | 학생용 안내서 | [`docs/vworld_map_practice_guide.md`](docs/vworld_map_practice_guide.md) | [`docs/conference_organizer_practice_guide.md`](docs/conference_organizer_practice_guide.md) |
 | 강사용 안내서 | [`docs/vworld_map_instructor_guide.md`](docs/vworld_map_instructor_guide.md) | [`docs/conference_organizer_instructor_guide.md`](docs/conference_organizer_instructor_guide.md) |
-| 모범 답안 / 예시 | [`examples/vworld_map_sample.html`](examples/vworld_map_sample.html) (인증키 미포함) | 노트북 `gsk2026_practice.ipynb` + [`docs/reference_notebook_guide.md`](docs/reference_notebook_guide.md) (수업 마지막 공개) |
+| 모범 답안 / 예시 | [`examples/vworld_map_sample.html`](examples/vworld_map_sample.html) (인증키 미포함, 영어판 [`vworld_map_sample.en.html`](examples/vworld_map_sample.en.html)) | 노트북 `gsk2026_practice.ipynb` + [`docs/reference_notebook_guide.md`](docs/reference_notebook_guide.md) (수업 마지막 공개) |
 
 두 실습 모두 진행 방식은 같습니다 — 완성 기준표를 보며 **단계별로 Gemini 에게 요청 → 실행 → 다운로드해서 열어 보기 → 기준과 비교**.
 **실습 1(지도 앱)을 먼저** 합니다. 화면 구성이 단순하고(지도 + 지점 기록), 다룰 데이터가 없어 Gemini 와 일하는 방식에 익숙해지기 좋습니다.
@@ -65,7 +65,8 @@ docs/conference_organizer_instructor_guide.md  실습 2 강사용 안내
 docs/reference_notebook_guide.md               실습 2 모범 답안 노트북 안내서 (수업 마지막 공개)
 docs/vworld_map_practice_guide.md              실습 1 학생용 안내서 (브이월드 지도 앱, §9 KIGAM 지질도 심화)
 docs/vworld_map_instructor_guide.md            실습 1 강사용 안내
-examples/vworld_map_sample.html                실습 1 참고 예시
+examples/vworld_map_sample.html                실습 1 참고 예시 (한국어 화면)
+examples/vworld_map_sample.en.html             실습 1 참고 예시 (영어 화면)
 README.en.md, docs/*.en.md                     위 안내서들과 이 README 의 영어판
 ```
 

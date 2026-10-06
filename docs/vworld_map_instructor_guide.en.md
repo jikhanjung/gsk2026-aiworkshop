@@ -18,7 +18,7 @@ What students learn for the first time in this practice:
 |------------------|------|
 | API key instructions (student guide §2-1) + **the value to enter as the service URL** | **1 week before class** (homework) |
 | `docs/vworld_map_practice_guide.en.md` | Start of class |
-| Reference sample `examples/vworld_map_sample.html` (optional) | End of class |
+| Reference sample `examples/vworld_map_sample.en.html` (optional) | End of class |
 
 ---
 
@@ -60,7 +60,7 @@ The geological map overlay in student guide §9 is **outside this practice's com
       Check whether the application form asks for a domain/service URL and **whether there is a domain restriction**. If there is, it may not work from `file://`.
 - [ ] Check the layer names (`L_50K_Geology_Map`, `L_250K_Geology_Map`, `L_1M_Geology_Map`), the coordinate system (whether requesting in `EPSG:3857` works),
       and whether `transparent=true` really returns a transparent PNG. At 1:50,000, areas with no map sheet look empty, so 1:250,000 is a safe choice for the demo.
-- [ ] Put your instructor key into `KIGAM_KEY` in the sample `examples/vworld_map_sample.html` for the demo → **hand out the file with the key removed after the demo**.
+- [ ] Put your instructor key into `KIGAM_KEY` in the sample `examples/vworld_map_sample.en.html` for the demo → **hand out the file with the key removed after the demo**.
 - **Caution: the error looks like a "server failure"** (confirmed 2026-10-06): requesting `GetMap` without a key or with a wrong key returns
   **HTTP 500 + an HTML page saying "서비스에 일시적인 오류가 발생했습니다." ("A temporary service error has occurred.")** (not an error XML or a blank image).
   If a student says "the KIGAM server is down", suspect the key first (approval status, typos). In Leaflet it only shows up as a tile error.
@@ -141,7 +141,9 @@ Quick grading check:
 
 ---
 
-## Reference sample `examples/vworld_map_sample.html`
+## Reference sample `examples/vworld_map_sample.en.html`
+
+(Korean-UI version: `examples/vworld_map_sample.html` — same code, only the text differs.)
 
 An example map app made with Gemini + Colab. Features: VWorld base map, click to add a site, **user-defined input fields (schema management)**,
 localStorage saving, JSON export/import (choice of overwrite or merge). Good points for comparison and discussion at the end of class:

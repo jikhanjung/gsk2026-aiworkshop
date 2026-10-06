@@ -17,7 +17,7 @@ There are two practices.
 | Advanced | **KIGAM geological map overlay** (API key needs approval → apply in advance, or do it as homework after class) | Per-session view, detail screen, bookmark export, etc. |
 | Student guide | [`docs/vworld_map_practice_guide.en.md`](docs/vworld_map_practice_guide.en.md) | [`docs/conference_organizer_practice_guide.en.md`](docs/conference_organizer_practice_guide.en.md) |
 | Instructor guide | [`docs/vworld_map_instructor_guide.en.md`](docs/vworld_map_instructor_guide.en.md) | [`docs/conference_organizer_instructor_guide.en.md`](docs/conference_organizer_instructor_guide.en.md) |
-| Reference solution / sample | [`examples/vworld_map_sample.html`](examples/vworld_map_sample.html) (API key not included) | Notebook `gsk2026_practice.ipynb` + [`docs/reference_notebook_guide.en.md`](docs/reference_notebook_guide.en.md) (released at the end of class) |
+| Reference solution / sample | [`examples/vworld_map_sample.en.html`](examples/vworld_map_sample.en.html) (API key not included; Korean version: [`vworld_map_sample.html`](examples/vworld_map_sample.html)) | Notebook `gsk2026_practice.ipynb` + [`docs/reference_notebook_guide.en.md`](docs/reference_notebook_guide.en.md) (released at the end of class) |
 
 Both practices work the same way — while looking at the completion criteria table, **ask Gemini step by step → run → download and open → compare with the criteria**.
 Do **Practice 1 (map app) first**. Its screen layout is simple (map + site records) and there is no data to handle, so it is a good way to get used to working with Gemini.
@@ -39,7 +39,7 @@ Be sure to point out to students that, unlike the map app, the condition changes
   (`https://data.kigam.re.kr/openapi/wms`, layers such as `L_50K_Geology_Map`) semi-transparently on top of the VWorld map.
   Sign-up is immediate, but **the API key requires approval, so it may be hard to get on the same day** (the VWorld key is issued immediately).
   → It is excluded from this practice's completion criteria and done by students who applied in advance or as homework after class. See guide §9.
-- `examples/vworld_map_sample.html` is a reference sample built with Leaflet + VWorld tiles + `localStorage` (API key not included).
+- `examples/vworld_map_sample.en.html` is a reference sample built with Leaflet + VWorld tiles + `localStorage` (API key not included).
   If you put a key in `KIGAM_KEY` inside the file, a menu to turn 1:50,000 / 1:250,000 geological maps on and off appears.
 - For service URL pre-checks, alternatives, and sample review points, see the instructor guide [`docs/vworld_map_instructor_guide.en.md`](docs/vworld_map_instructor_guide.en.md).
 
@@ -65,7 +65,8 @@ docs/conference_organizer_instructor_guide.md  Practice 2 instructor guide
 docs/reference_notebook_guide.md               Practice 2 reference solution notebook guide (released at the end of class)
 docs/vworld_map_practice_guide.md              Practice 1 student guide (VWorld Map App, §9 KIGAM geological map advanced)
 docs/vworld_map_instructor_guide.md            Practice 1 instructor guide
-examples/vworld_map_sample.html                Practice 1 reference sample
+examples/vworld_map_sample.html                Practice 1 reference sample (Korean UI)
+examples/vworld_map_sample.en.html             Practice 1 reference sample (English UI)
 README.en.md, docs/*.en.md                     English versions of the guides above and of this README
 ```
 
