@@ -6,7 +6,7 @@
 > by chatting with Gemini in Colab ([`conference_organizer_practice_guide.en.md`](conference_organizer_practice_guide.en.md)). This document is for
 > following the instructor's pre-built reference solution notebook `gsk2026_practice.ipynb` and **comparing it with what you made**.
 > Notebook link: https://colab.research.google.com/github/jikhanjung/gsk2026-aiworkshop/blob/main/gsk2026_practice.ipynb
-> **Note:** the notebook itself (explanations and code comments) is written in Korean. This guide walks through the same steps in English.
+> **Note:** the notebook's explanation cells and code comments are bilingual (Korean, then English); the app's on-screen labels stay in Korean. This guide walks through the same steps in English.
 
 In this practice you take conference presentation data (JSON), build a web app HTML file in **Google Colab**, download it,
 and **use it directly in the browser on your own PC**. At the end you will have a single HTML file with the following features:

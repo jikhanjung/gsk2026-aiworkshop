@@ -142,7 +142,7 @@ If time is short, skip the "Things to try" in Step 3; for Step 5, you can just s
 ## Practice 2 — Cautions
 
 - **Runtime reset**: after a long idle period, uploaded files and generated HTML disappear. Run "Runtime → Run all before" and upload the data again.
-- Students often delete **the first line of `%%writefile` and `__DATA__`**. `build()` reports this with an error message in Korean.
+- Students often delete **the first line of `%%writefile` and `__DATA__`**. `build()` reports this with a bilingual (Korean / English) error message.
 - **Preview doesn't change**: in most cases the template cell was not re-run.
 - **Blank white screen**: open the downloaded file in Chrome and press `F12` → Console. Most cases are mismatched backticks or brackets.
 - **Bookmark storage**: the Colab preview and the downloaded file are stored separately. In Chrome, local HTML files share storage with each other,
