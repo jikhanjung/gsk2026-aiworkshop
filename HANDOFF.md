@@ -18,6 +18,14 @@
 - 문서: `docs/gemini_practice_guide.md`(학생), `docs/instructor_guide.md`(강사),
   `docs/reference_notebook_guide.md`(구 colab_guide — 모범 답안 안내서로 전환).
 
+## 실습 2 — 브이월드 지도 앱 (devlog 007)
+
+- 문서: `docs/vworld_map_practice_guide.md`(학생), `docs/vworld_map_instructor_guide.md`(강사), 샘플 `examples/vworld_map_sample.html`(사용자가 Gemini 로 만든 것).
+- **미확인 — 수업 전 반드시 실제 키로 점검**: 브이월드 WMTS 가 서비스 URL(도메인)을 검사하는지,
+  `file://` 로 연 HTML 과 Colab 미리보기에서 타일이 나오는지. 결과에 따라 학생에게 줄 "서비스 URL" 값과 완성 기준 #2 를 확정
+  (강사 안내서 "수업 전 점검 1)" 표). 키 없는 옛 주소 `xdworld.vworld.kr/2d/…/{z}/{x}/{y}` 는 2026-10-06 현재 동작(비공식).
+- Gemini 패널: 새 노트북에선 닫혀 있음 → 화면 맨 아래 가운데 ✦ **Toggle Gemini**. 두 학생 안내서·강사 안내서에 반영.
+
 ## 다음 할 일
 
 0. **강사가 Gemini in Colab 으로 전 과정을 직접 한 번 해 보기** — 안내서의 UI 설명·프롬프트 예시·"Gemini 가 자주 하는 실수" 표가

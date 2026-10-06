@@ -1,19 +1,49 @@
-# 학회 프로그램 웹앱 만들기 — AI 활용 실습 (GSK 2026 AI 워크숍)
+# GSK 2026 AI 워크숍 — Gemini 와 함께 HTML 앱 만들기
 
-학생들이 **Google Colab 의 Gemini 에게 프롬프트를 입력하며** 학회 프로그램 데이터(JSON)로
-**HTML 파일 하나짜리 학회 시간표 앱**을 만들고, 내려받아 내 PC 브라우저에서 쓰는 실습 자료입니다.
-학생은 빈 노트북에서 시작하고, 강사가 미리 만든 **모범 답안 노트북**은 수업 마지막에 공개해 비교합니다.
+학생들이 **Google Colab 의 Gemini 에게 프롬프트를 입력하며** 노트북을 구성하고,
+그 결과로 **HTML 파일 하나짜리 앱**을 만들어 내려받아 내 PC 브라우저에서 쓰는 실습 자료입니다.
+코드를 처음부터 주지 않고, **원하는 것을 정확히 말하고 → 결과를 확인하고 → 고쳐 달라고 하는 과정**을 연습합니다.
 
-| 문서 | 대상 | 시점 |
-|------|------|------|
-| [`docs/gemini_practice_guide.md`](docs/gemini_practice_guide.md) — 완성 기준·프롬프트 예시·주의사항 | 학생 | 수업 시작 |
-| [`docs/instructor_guide.md`](docs/instructor_guide.md) — 수업 운영·점검·개입 힌트·평가 기준 | 강사 | 수업 전 |
-| [`docs/reference_notebook_guide.md`](docs/reference_notebook_guide.md) + `gsk2026_practice.ipynb` — 모범 답안 | 학생 | 수업 마지막 |
+실습은 두 가지입니다.
 
-- 모범 답안 노트북 Colab 링크: https://colab.research.google.com/github/jikhanjung/gsk2026-aiworkshop/blob/main/gsk2026_practice.ipynb
+| | 실습 1. 학회 시간표 앱 | 실습 2. 브이월드 지도 앱 |
+|---|---|---|
+| 만드는 것 | 학회 발표를 날짜·발표장별로 보고, 북마크해서 **내 일정** 만들기 | 브이월드 배경지도 위에 **답사·시료 지점**을 찍고 기록하기 |
+| 학생에게 주는 것 | 학회 프로그램 데이터 `conference.json` | 없음 — 학생이 **브이월드 인증키**를 미리 발급 |
+| 인터넷 | **필요 없음** (데이터를 HTML 안에 넣음, 외부 라이브러리 금지) | **필요** (지도 타일, Leaflet CDN 허용) |
+| 새로 배우는 것 | 데이터 → HTML, 필터·검색, `localStorage`, 시간 겹침 계산 | 지도 라이브러리, 외부 API, **인증키를 안전하게 다루기**(Colab 보안 비밀) |
+| 심화 | 세션별 보기, 북마크 내보내기 등 | **KIGAM 지질도 오버레이** (키 승인 필요 → 사전 신청 또는 수업 후 과제) |
+| 학생용 안내서 | [`docs/gemini_practice_guide.md`](docs/gemini_practice_guide.md) | [`docs/vworld_map_practice_guide.md`](docs/vworld_map_practice_guide.md) |
+| 강사용 안내서 | [`docs/instructor_guide.md`](docs/instructor_guide.md) | [`docs/vworld_map_instructor_guide.md`](docs/vworld_map_instructor_guide.md) |
+| 모범 답안 / 예시 | 노트북 `gsk2026_practice.ipynb` + [`docs/reference_notebook_guide.md`](docs/reference_notebook_guide.md) (수업 마지막 공개) | [`examples/vworld_map_sample.html`](examples/vworld_map_sample.html) (인증키 미포함) |
+
+두 실습 모두 진행 방식은 같습니다 — 완성 기준표를 보며 **단계별로 Gemini 에게 요청 → 실행 → 다운로드해서 열어 보기 → 기준과 비교**.
+실습 1 을 먼저 하고, 실습 2 에서 외부 서비스와 인증키 다루기를 더하는 순서를 권합니다.
+
+- 모범 답안 노트북 Colab 링크(실습 1): https://colab.research.google.com/github/jikhanjung/gsk2026-aiworkshop/blob/main/gsk2026_practice.ipynb
 - 설계 결정·규칙: [`CLAUDE.md`](CLAUDE.md) · 진행 상황: [`HANDOFF.md`](HANDOFF.md) · 개발 기록: [`devlog/`](devlog/README.md)
 
-## 구성
+## 실습 2 (브이월드 지도 앱) 요약
+
+- **수업 전 과제**: 학생이 브이월드(https://www.vworld.kr) 가입 → 인증키 발급(배경지도 WMTS 포함) → 메일 인증 → 승인 확인.
+  키는 신청 즉시 발급되지만 가입·메일 인증 단계가 있으므로 **수업 전에 미리** 받아 오게 합니다. 신청서의 **서비스 URL** 은 강사가 미리 시험해 본 값을 알려 줍니다.
+- **인증키는 노트북 코드에 쓰지 않습니다.** Colab 왼쪽 🔑 **보안 비밀**에 `VWORLD_KEY` 로 넣고 코드에서 읽습니다.
+  단, 완성 HTML 파일에는 키가 들어가므로 **HTML 은 강사에게만 제출**하고 공개하지 않습니다.
+- 완성 기준: 내 키로 배경지도 표시, 배경지도 전환, 클릭해서 지점 추가·정보 보기·삭제, 다시 열어도 유지(`localStorage`),
+  JSON 내보내기·불러오기, 키가 노트북에 노출되지 않음. 자세한 단계·프롬프트·주의사항은 안내서 참고.
+- **(심화) 지질도 오버레이**: 한국지질자원연구원 지오빅데이터 오픈플랫폼(https://data.kigam.re.kr) OpenAPI 의 지질도 WMS
+  (`https://data.kigam.re.kr/openapi/wms`, 레이어 `L_50K_Geology_Map` 등)를 브이월드 지도 위에 반투명하게 겹칩니다.
+  가입은 바로 되지만 **인증키는 승인을 거쳐야 해서 당일 발급이 어려울 수 있습니다** (브이월드 키는 즉시 발급).
+  → 본 실습 완성 기준에서 빼고, 미리 신청한 학생이나 수업 후 과제로 진행합니다. 안내서 §9.
+- `examples/vworld_map_sample.html` 은 Leaflet + 브이월드 타일 + `localStorage` 로 만든 참고 예시입니다 (인증키 미포함).
+  파일 안 `KIGAM_KEY` 에 키를 넣으면 1:5만 / 1:25만 지질도 켜기·끄기 메뉴가 생깁니다.
+- 서비스 URL 사전 점검, 대안, 샘플 리뷰 포인트는 강사용 [`docs/vworld_map_instructor_guide.md`](docs/vworld_map_instructor_guide.md).
+
+---
+
+이 아래는 **실습 1(학회 시간표 앱)** 의 자료 구성과 준비 절차입니다.
+
+## 실습 1 — 구성
 
 ```
 data/conference.json       실습 데이터 (git 미추적, scripts/parse_program_book.py 로 생성)
@@ -29,13 +59,16 @@ scripts/smoke_test.js      jsdom 렌더 스모크 테스트 (check.py 가 호출
 docs/gemini_practice_guide.md     학생용 Gemini 실습 안내서
 docs/instructor_guide.md          강사용 수업 운영 안내
 docs/reference_notebook_guide.md  모범 답안 노트북 안내서 (수업 마지막 공개)
+docs/vworld_map_practice_guide.md 실습 2 학생용 안내서 (브이월드 지도 앱, §9 KIGAM 지질도 심화)
+docs/vworld_map_instructor_guide.md 실습 2 강사용 안내
+examples/vworld_map_sample.html   실습 2 참고 예시
 ```
 
 템플릿은 모두 `const DATA = __DATA__;` 한 자리를 가지고 있고, 파이썬이 그 자리에 JSON 을 넣습니다
 (`</` 는 `<\/` 로 이스케이프). `file://` 로 열면 `fetch` 가 막히기 때문에 데이터를 HTML 안에 넣는 방식입니다.
 템플릿은 학회명·날짜·장소·세션을 전부 `DATA` 에서 읽으므로, 같은 스키마의 다른 학회 데이터를 넣어도 그대로 동작합니다.
 
-## 데이터
+## 실습 1 — 데이터
 
 스키마 (`data/conference.json`):
 
@@ -59,7 +92,7 @@ docs/reference_notebook_guide.md  모범 답안 노트북 안내서 (수업 마�
   쪽 배치가 바뀌었으면 `scripts/parse_program_book.py` 머리 주석의 좌표·글자 크기 규칙을 고칩니다.
 - 학회 자료이므로 **공개 저장소·웹에 올리지 않습니다** (`data/`, `dist/` 는 `.gitignore`).
 
-## 수업 전 준비 (강사)
+## 실습 1 — 수업 전 준비 (강사)
 
 수업 운영·점검 항목은 [`docs/instructor_guide.md`](docs/instructor_guide.md). 아래는 자료를 만드는 절차와,
 모범 답안 노트북을 학생들이 바로 따라 할 수 있게 준비하는 절차입니다.
@@ -81,7 +114,7 @@ docs/reference_notebook_guide.md  모범 답안 노트북 안내서 (수업 마�
 
 `docs/instructor_guide.md` 의 "수업 전 점검" 도 함께 보세요.
 
-## (대안) 모범 답안 노트북으로 강의식 진행 (예: 3시간)
+## 실습 1 — (대안) 모범 답안 노트북으로 강의식 진행 (예: 3시간)
 
 기본 수업 방식(Gemini 실습)의 진행표는 `docs/instructor_guide.md`. 아래는 모범 답안 노트북을 처음부터 같이 따라가는 강의식 진행입니다.
 
@@ -100,7 +133,7 @@ docs/reference_notebook_guide.md  모범 답안 노트북 안내서 (수업 마�
 
 시간이 부족하면 Step 3 의 "해 볼 것" 을 건너뛰고, Step 5 는 코드 설명 없이 기능만 보여 줘도 됩니다.
 
-## 주의점
+## 실습 1 — 주의점
 
 - **런타임 초기화**: 오래 쉬면 업로드한 파일·만든 HTML 이 사라집니다. "런타임 → 이전 셀 모두 실행" 후 데이터를 다시 올리면 됩니다.
 - **`%%writefile` 첫 줄과 `__DATA__`** 를 학생이 지우는 일이 흔합니다. `build()` 가 한국어 오류로 알려 줍니다.
@@ -111,7 +144,7 @@ docs/reference_notebook_guide.md  모범 답안 노트북 안내서 (수업 마�
 - **폰 비권장**: 폰의 파일 앱 미리보기는 JS·`localStorage` 가 잘 동작하지 않습니다. PC Chrome 기준으로 진행하세요.
 - 결과 HTML(약 2MB)에는 **초록 본문까지 전부** 들어 있습니다. 공개 장소에 올리지 않도록 안내하세요.
 
-## 개발 (템플릿을 고칠 때)
+## 실습 1 — 개발 (템플릿을 고칠 때)
 
 ```bash
 # 템플릿 하나를 빌드해서 브라우저로 확인

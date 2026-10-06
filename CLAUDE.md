@@ -8,6 +8,10 @@ GSK 2026 AI 워크숍 학생 실습 자료 (GitHub: `jikhanjung/gsk2026-aiworksh
 - 이 저장소의 템플릿·노트북(`gsk2026_practice.ipynb`)은 **모범 답안** — 수업 마지막에 공개해 비교용으로 쓴다
   (`docs/reference_notebook_guide.md`). 노트북을 처음부터 주지 않는다.
 (PDF 파싱은 실습 범위 밖 — 강사 준비 작업. 데이터는 대한지질학회 프로그램북 PDF 를 파싱해 사용.)
+- **실습 2 — 브이월드 지도 앱**: 같은 방식으로 Leaflet + 브이월드 WMTS 배경지도에 지점을 기록하는 HTML 앱.
+  학생이 브이월드 인증키를 발급받아 **Colab 보안 비밀(`VWORLD_KEY`)** 로 넣는 과정이 핵심. 이 앱은 인터넷 필요(Leaflet CDN 허용).
+  문서: `docs/vworld_map_practice_guide.md`(학생), `docs/vworld_map_instructor_guide.md`(강사), 샘플 `examples/vworld_map_sample.html`.
+  WMTS 주소: `https://api.vworld.kr/req/wmts/1.0.0/{키}/{Base|white|midnight|Hybrid(png)|Satellite(jpeg)}/{z}/{y}/{x}` (y 가 먼저).
 
 ## 설계 결정 (사용자와 합의됨)
 - 결과물은 **HTML 파일 하나**. 데이터는 `<script>const DATA = __DATA__;</script>` 자리에

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Standalone Vworld Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #toolbar {
+            padding: 10px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            z-index: 1000;
+            flex-wrap: wrap;
+        }
+        #map {
+            width: 100%;
+            flex-grow: 1;
+            height: 100%;
+        }
+        .popup-form {
+            font-size: 13px;
+            max-width: 280px;
+            max-height: 450px;
+            overflow-y: auto;
+        }
+        .popup-form table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 8px;
+        }
+        .popup-form td {
+            padding: 3px 0;
+        }
+        .popup-form input[type="text"] {
+            width: 100%;
+            padding: 4px;
+            box-sizing: border-box;
+        }
+        .popup-form button {
+            width: 100%;
+            padding: 6px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .popup-form button:hover {
+            background-color: #0056b3;
+        }
+        .btn-tool {
+            padding: 6px 12px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-tool:hover {
+            background: #218838;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 450px;
+            border-radius: 8px;
+        }
+        .modal-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .schema-field-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<div id="toolbar">
+    <button class="btn-tool" style="background:#6c757d;" onclick="openSchemaModal()">필드 설정 (Schema Manager)</button>
+    <button class="btn-tool" onclick="exportData()">데이터 내보내기 (Export)</button>
+    <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importData(event)">
+    <button class="btn-tool" style="background:#17a2b8;" onclick="document.getElementById('import-file').click()">데이터 가져오기 (Import)</button>
+</div>
+
+<div id="map"></div>
+
+<div id="schemaModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">마커 데이터 스키마 설정</div>
+        <p style="font-size: 12px; color: #666;">각 마커에 입력할 텍스트 필드명을 관리하세요.</p>
+        <div id="schema-list-container"></div>
+        <button class="btn-tool" style="background:#17a2b8; width: 100%; margin-top: 10px;" onclick="addSchemaFieldRow('')">+ 필드 추가</button>
+        <hr style="margin: 15px 0;">
+        <div style="display:flex; gap:10px; justify-content: flex-end;">
+            <button class="btn-tool" style="background:#6c757d;" onclick="closeSchemaModal()">취소</button>
+            <button class="btn-tool" onclick="saveSchema()">적용</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 지도 초기화 설정 (대한민국 중심)
+    var map = L.map('map').setView([36.5, 127.5], 7);
+
+    // 브이월드(Vworld) 2D Base 배경지도 타일 설정
+    var vworldUrl = 'https://xdworld.vworld.kr/2d/Base/service/{z}/{x}/{y}.png';
+    L.tileLayer(vworldUrl, {
+        maxZoom: 19,
+        minZoom: 6,
+        attribution: '&copy; Vworld Spatial Information Open Platform'
+    }).addTo(map);
+
+    // (선택) 한국지질자원연구원(KIGAM) 지질도 오버레이
+    // 지오빅데이터 오픈플랫폼(https://data.kigam.re.kr)에서 OpenAPI 인증키를 발급받아 아래에 넣으면
+    // 지도 오른쪽 위에 지질도 켜기/끄기 메뉴가 생긴다. 비워 두면 지질도 없이 동작한다.
+    // ⚠️ 키를 넣은 HTML 은 공개하지 말 것 (파일을 연 사람은 누구나 키를 볼 수 있다).
+    var KIGAM_KEY = '';
+    if (KIGAM_KEY) {
+        function kigamWms(layerName) {
+            // Leaflet 의 WMS 레이어는 옵션 중 Leaflet 이 모르는 이름(key)을 요청 주소에 그대로 붙여 준다
+            return L.tileLayer.wms('https://data.kigam.re.kr/openapi/wms', {
+                key: KIGAM_KEY,
+                layers: layerName,
+                format: 'image/png',
+                transparent: true,
+                version: '1.1.1',
+                opacity: 0.6,           // 배경지도가 비쳐 보이게
+                attribution: '지질도 &copy; 한국지질자원연구원'
+            });
+        }
+        L.control.layers(null, {
+            '1:5만 지질도 (KIGAM)': kigamWms('L_50K_Geology_Map'),
+            '1:25만 지질도 (KIGAM)': kigamWms('L_250K_Geology_Map')
+        }, { collapsed: false }).addTo(map);
+    }
+
+    var STORAGE_DATA_KEY = 'standalone_map_markers_v1';
+    var defaultSchema = ['장소명', '방문일', '메모'];
+    var appState = {
+        schema: defaultSchema,
+        markers: []
+    };
+    var activeMarkers = [];
+
+    function loadState() {
+        try {
+            var saved = localStorage.getItem(STORAGE_DATA_KEY);
+            if (saved) {
+                appState = JSON.parse(saved);
+                if (!appState.schema) appState.schema = defaultSchema;
+                if (!appState.markers) appState.markers = [];
+            }
+        } catch(e) {
+            console.warn("LocalStorage 로드 실패");
+        }
+        renderAllMarkers();
+    }
+
+    function saveState() {
+        try {
+            localStorage.setItem(STORAGE_DATA_KEY, JSON.stringify(appState));
+        } catch(e) {
+            console.warn("LocalStorage 저장 실패");
+        }
+    }
+
+    function renderAllMarkers() {
+        activeMarkers.forEach(function(m) { map.removeLayer(m.layer); });
+        activeMarkers = [];
+        appState.markers.forEach(function(m) {
+            createMarkerOnMap(m);
+        });
+    }
+
+    function createMarkerOnMap(markerData) {
+        var marker = L.marker([markerData.lat, markerData.lng]).addTo(map);
+        var popupContent = L.DomUtil.create('div', 'popup-form');
+        var html = '<strong>위도:</strong> ' + markerData.lat.toFixed(6) + '<br>' +
+                   '<strong>경도:</strong> ' + markerData.lng.toFixed(6) + '<br>' +
+                   '<table style="margin-top: 8px;">';
+
+        appState.schema.forEach(function(field) {
+            var val = markerData.fields[field] || '';
+            html += '<tr>' +
+                    '<td style="font-weight:bold; width:35%;">' + field + ':</td>' +
+                    '<td>' + (val || '<span style="color:#ccc;">-</span>') + '</td>' +
+                    '</tr>';
+        });
+        html += '</table>';
+        html += '<button id="btn-delete-' + markerData.lat.toFixed(6) + '-' + markerData.lng.toFixed(6) + '" style="margin-top:10px; background-color:#dc3545;">삭제</button>';
+
+        popupContent.innerHTML = html;
+        marker.bindPopup(popupContent);
+
+        marker.on('popupopen', function() {
+            var btnId = 'btn-delete-' + markerData.lat.toFixed(6) + '-' + markerData.lng.toFixed(6);
+            var deleteBtn = document.getElementById(btnId);
+            if (deleteBtn) {
+                deleteBtn.onclick = function() {
+                    map.removeLayer(marker);
+                    deleteMarkerData(markerData.lat, markerData.lng);
+                };
+            }
+        });
+
+        activeMarkers.push({ lat: markerData.lat, lng: markerData.lng, layer: marker });
+    }
+
+    function deleteMarkerData(lat, lng) {
+        appState.markers = appState.markers.filter(function(m) {
+            return !(m.lat === lat && m.lng === lng);
+        });
+        saveState();
+        activeMarkers = activeMarkers.filter(function(m) {
+            return !(m.lat === lat && m.lng === lng);
+        });
+    }
+
+    map.on('click', function(e) {
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+        var container = L.DomUtil.create('div', 'popup-form');
+        var html = '<strong>위도:</strong> ' + lat.toFixed(6) + '<br>' +
+                   '<strong>경도:</strong> ' + lng.toFixed(6) + '<br>' +
+                   '<table style="margin-top: 8px;">';
+
+        appState.schema.forEach(function(field) {
+            html += '<tr>' +
+                    '<td style="font-weight:bold;">' + field + ':</td>' +
+                    '<td><input type="text" class="schema-input-field" data-field="' + field + '" id="field-input-' + field + '"></td>' +
+                    '</tr>';
+        });
+        html += '</table><button id="save-btn" style="margin-top:5px;">저장</button>';
+        container.innerHTML = html;
+
+        var popup = L.popup().setLatLng(e.latlng).setContent(container).openOn(map);
+
+        document.getElementById('save-btn').onclick = function() {
+            var inputElements = container.querySelectorAll('.schema-input-field');
+            var fieldsData = {};
+            inputElements.forEach(function(input) {
+                fieldsData[input.getAttribute('data-field')] = input.value.trim();
+            });
+            var newMarker = {
+                lat: lat,
+                lng: lng,
+                fields: fieldsData
+            };
+            appState.markers.push(newMarker);
+            saveState();
+            createMarkerOnMap(newMarker);
+            map.closePopup();
+        };
+    });
+
+    function openSchemaModal() {
+        var container = document.getElementById('schema-list-container');
+        container.innerHTML = '';
+        appState.schema.forEach(function(field) {
+            addSchemaFieldRow(field);
+        });
+        document.getElementById('schemaModal').style.display = 'block';
+    }
+
+    function closeSchemaModal() {
+        document.getElementById('schemaModal').style.display = 'none';
+    }
+
+    function addSchemaFieldRow(value) {
+        var container = document.getElementById('schema-list-container');
+        var row = document.createElement('div');
+        row.className = 'schema-field-row';
+        row.innerHTML = '<input type="text" class="modal-schema-input" value="' + value + '" style="flex-grow:1; padding:6px;" placeholder="필드 이름 입력">' +
+                        '<button class="btn-tool" style="background:#dc3545; padding:6px 10px;" onclick="this.parentElement.remove()">삭제</button>';
+        container.appendChild(row);
+    }
+
+    function saveSchema() {
+        var inputs = document.querySelectorAll('.modal-schema-input');
+        var newSchema = [];
+        inputs.forEach(function(input) {
+            var val = input.value.trim();
+            if (val && newSchema.indexOf(val) === -1) {
+                newSchema.push(val);
+            }
+        });
+        if (newSchema.length === 0) {
+            alert('최소 1개 이상의 필드가 지정되어야 합니다.');
+            return;
+        }
+        appState.schema = newSchema;
+        saveState();
+        renderAllMarkers();
+        closeSchemaModal();
+    }
+
+    function exportData() {
+        var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+        var downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "map_database.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+    }
+
+    function importData(event) {
+        var file = event.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                var importedData = JSON.parse(e.target.result);
+                if (importedData && Array.isArray(importedData.schema) && Array.isArray(importedData.markers)) {
+
+                    // 파이썬 삼중 따옴표 안 이스케이프 문자 정상 변환
+                    var message = "기존에 등록되어 있는 데이터를 모두 삭제하고 새로 가져오시겠습니까?\n\n(확인: 기존 데이터 삭제 / 취소: 기존 데이터에 병합)";
+                    var shouldClear = confirm(message);
+
+                    if (shouldClear) {
+                        // 기존 데이터를 완전히 초기화하고 대체
+                        appState.schema = importedData.schema;
+                        appState.markers = importedData.markers;
+                    } else {
+                        // 기존 데이터에 병합 처리
+                        var combinedSchema = [].concat(appState.schema);
+                        importedData.schema.forEach(function(s) {
+                            if (combinedSchema.indexOf(s) === -1) combinedSchema.push(s);
+                        });
+                        var currentMarkers = [].concat(appState.markers);
+                        importedData.markers.forEach(function(item) {
+                            var isDuplicate = currentMarkers.some(function(curr) {
+                                return curr.lat === item.lat && curr.lng === item.lng;
+                            });
+                            if (!isDuplicate) currentMarkers.push(item);
+                        });
+                        appState.schema = combinedSchema;
+                        appState.markers = currentMarkers;
+                    }
+
+                    saveState();
+                    renderAllMarkers();
+                    alert('데이터를 성공적으로 가져왔습니다!');
+                } else {
+                    alert('올바르지 않은 구조입니다.');
+                }
+            } catch (error) {
+                alert('파싱 오류');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    loadState();
+</script>
+</body>
+</html>
