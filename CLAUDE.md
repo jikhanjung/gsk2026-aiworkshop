@@ -1,5 +1,9 @@
 # gsk2026 — 학회 프로그램 로컬 웹앱 만들기 실습
 
+## 공통 가이드 (`.guides`)
+공통 가이드 색인은 `.guides/README.md` (브랜드 규약 `.guides/branding.md`). `.guides`는 `../devdocs/guides`를 가리키는 로컬 상대 심볼릭 링크다(`.gitignore` 처리).
+없거나 끊어져 있으면 형제 devdocs 체크아웃이 없는 것 — devdocs는 private이고 이 저장소는 public이므로 가이드를 여기에 **커밋하지 않는다.**
+
 ## 목적
 GSK 2026 AI 워크숍 학생 실습 자료 (GitHub: `jikhanjung/gsk2026-aiworkshop`, public).
 **AI 활용 수업**: 학생은 빈 Colab 노트북에서 **Gemini 에게 프롬프트를 입력하며** 미리 만든 학회 JSON 으로
