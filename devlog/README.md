@@ -22,3 +22,4 @@
 | **README 두 실습 · 지질도 심화** | 008 readme_two_practices_and_kigam_overlay (README 실습 1/2 비교표, 브이월드 안내서 §9 KIGAM 지질도 WMS 오버레이, 샘플 `KIGAM_KEY`) | 10/6 |
 | **실습 2 — 지질도 심화** | 009 kigam_instructor_memo (강사 안내서에 KIGAM WMS 사전 점검, 무효 키 → HTTP 500 "일시적인 오류" 페이지) | 10/6 |
 | **실습 순서 변경** | 010 practice_order_swap (실습 1 = 브이월드 지도 앱, 실습 2 = 학회 시간표 앱. README·안내서 4종·CLAUDE/HANDOFF 갱신) | 10/6 |
+| **쉬운 말 프롬프트 · 앱 이름** | 011 plain_prompts_and_conference_organizer (학생 안내서 프롬프트를 비전공자 말투로, 참고 카드 분리, 실수 표 재구성 / 시간표 앱 = Conference Organizer, 안내서 파일명 변경) | 10/6 |

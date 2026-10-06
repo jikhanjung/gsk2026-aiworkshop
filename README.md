@@ -6,20 +6,20 @@
 
 실습은 두 가지입니다.
 
-| | 실습 1. 브이월드 지도 앱 | 실습 2. 학회 시간표 앱 |
+| | 실습 1. 브이월드 지도 앱 | 실습 2. Conference Organizer (학회 시간표 앱) |
 |---|---|---|
 | 만드는 것 | 브이월드 배경지도 위에 **답사·시료 지점**을 찍고 기록하기 | 학회 발표를 날짜·발표장별로 보고, 북마크해서 **내 일정** 만들기 |
 | 학생에게 주는 것 | 없음 — 학생이 **브이월드 인증키**를 미리 발급 | 학회 프로그램 데이터 `conference.json` |
 | 인터넷 | **필요** (지도 타일, Leaflet CDN 허용) | **필요 없음** (데이터를 HTML 안에 넣음, 외부 라이브러리 금지) |
 | 새로 배우는 것 | 지도 라이브러리, 외부 API, **인증키를 안전하게 다루기**(Colab 보안 비밀), `localStorage`, 내보내기·불러오기 | 데이터 파일 → HTML 에 넣기, 필터·검색, 화면 상태 관리, 시간 겹침 계산 |
 | 심화 | **KIGAM 지질도 오버레이** (키 승인 필요 → 사전 신청 또는 수업 후 과제) | 세션별 보기, 상세 화면, 북마크 내보내기 등 |
-| 학생용 안내서 | [`docs/vworld_map_practice_guide.md`](docs/vworld_map_practice_guide.md) | [`docs/gemini_practice_guide.md`](docs/gemini_practice_guide.md) |
-| 강사용 안내서 | [`docs/vworld_map_instructor_guide.md`](docs/vworld_map_instructor_guide.md) | [`docs/instructor_guide.md`](docs/instructor_guide.md) |
+| 학생용 안내서 | [`docs/vworld_map_practice_guide.md`](docs/vworld_map_practice_guide.md) | [`docs/conference_organizer_practice_guide.md`](docs/conference_organizer_practice_guide.md) |
+| 강사용 안내서 | [`docs/vworld_map_instructor_guide.md`](docs/vworld_map_instructor_guide.md) | [`docs/conference_organizer_instructor_guide.md`](docs/conference_organizer_instructor_guide.md) |
 | 모범 답안 / 예시 | [`examples/vworld_map_sample.html`](examples/vworld_map_sample.html) (인증키 미포함) | 노트북 `gsk2026_practice.ipynb` + [`docs/reference_notebook_guide.md`](docs/reference_notebook_guide.md) (수업 마지막 공개) |
 
 두 실습 모두 진행 방식은 같습니다 — 완성 기준표를 보며 **단계별로 Gemini 에게 요청 → 실행 → 다운로드해서 열어 보기 → 기준과 비교**.
 **실습 1(지도 앱)을 먼저** 합니다. 화면 구성이 단순하고(지도 + 지점 기록), 다룰 데이터가 없어 Gemini 와 일하는 방식에 익숙해지기 좋습니다.
-실습 2(시간표 앱)에서는 큰 데이터 파일을 HTML 에 넣고, 필터·검색·겹침 계산처럼 로직이 더 많은 앱을 만듭니다.
+실습 2(Conference Organizer)에서는 큰 데이터 파일을 HTML 에 넣고, 필터·검색·겹침 계산처럼 로직이 더 많은 앱을 만듭니다.
 지도 앱과 달리 **외부 라이브러리(CDN)를 쓰지 않는다**는 조건이 바뀌는 점을 학생에게 꼭 짚어 주세요.
 
 - 모범 답안 노트북 Colab 링크(실습 2): https://colab.research.google.com/github/jikhanjung/gsk2026-aiworkshop/blob/main/gsk2026_practice.ipynb
@@ -43,7 +43,7 @@
 
 ---
 
-이 아래는 저장소 구성과 **실습 2(학회 시간표 앱)** 의 데이터·준비 절차입니다.
+이 아래는 저장소 구성과 **실습 2(Conference Organizer)** 의 데이터·준비 절차입니다.
 
 ## 저장소 구성
 
@@ -58,8 +58,8 @@ build.py                   템플릿 + JSON → 단일 HTML (로컬용, 노트�
 scripts/make_notebook.py   steps/*.html 을 %%writefile 셀로 넣어 노트북 생성
 scripts/check.py           전체 검증 (빌드, JS 문법, 노트북, 렌더 스모크 테스트)
 scripts/smoke_test.js      jsdom 렌더 스모크 테스트 (check.py 가 호출)
-docs/gemini_practice_guide.md     학생용 Gemini 실습 안내서
-docs/instructor_guide.md          강사용 수업 운영 안내
+docs/conference_organizer_practice_guide.md     학생용 Gemini 실습 안내서
+docs/conference_organizer_instructor_guide.md          강사용 수업 운영 안내
 docs/reference_notebook_guide.md  모범 답안 노트북 안내서 (수업 마지막 공개)
 docs/vworld_map_practice_guide.md 실습 1 학생용 안내서 (브이월드 지도 앱, §9 KIGAM 지질도 심화)
 docs/vworld_map_instructor_guide.md 실습 1 강사용 안내
@@ -96,7 +96,7 @@ examples/vworld_map_sample.html   실습 1 참고 예시
 
 ## 실습 2 — 수업 전 준비 (강사)
 
-수업 운영·점검 항목은 [`docs/instructor_guide.md`](docs/instructor_guide.md). 아래는 자료를 만드는 절차와,
+수업 운영·점검 항목은 [`docs/conference_organizer_instructor_guide.md`](docs/conference_organizer_instructor_guide.md). 아래는 자료를 만드는 절차와,
 모범 답안 노트북을 학생들이 바로 따라 할 수 있게 준비하는 절차입니다.
 
 1. 데이터 만들기: 프로그램북 PDF 를 `data/src/` 에 두고
@@ -106,7 +106,7 @@ examples/vworld_map_sample.html   실습 1 참고 예시
 4. 노트북을 드라이브에 올리고 Colab 으로 열어 **위에서부터 끝까지 한 번 실행**해 봅니다.
    특히 `preview()` 미리보기가 실습실 네트워크에서 뜨는지, `download()` 가 되는지 확인.
 5. 노트북 공유 링크는 **보기 전용**으로. 학생은 "드라이브에 사본 저장" 후 작업합니다.
-6. 데이터 배포 방법을 정합니다 (`docs/reference_notebook_guide.md` §3-2, `docs/gemini_practice_guide.md` §2).
+6. 데이터 배포 방법을 정합니다 (`docs/reference_notebook_guide.md` §3-2, `docs/conference_organizer_practice_guide.md` §2).
    - **방법 A 업로드**: `conference.json` 을 메신저·LMS 로 나눠 주고 학생이 업로드. 가장 단순.
    - **방법 B 드라이브**: 공유 폴더에 두고 학생이 "내 드라이브에 바로가기 추가" → 노트북의 `DATA_PATH` 수정.
      드라이브 권한 창이 한 번 더 나오므로 시간이 조금 더 걸립니다.
@@ -114,11 +114,11 @@ examples/vworld_map_sample.html   실습 1 참고 예시
 7. 실습실 PC 에서 *Chrome 다운로드 → 로컬 HTML 더블클릭 → 북마크 후 다시 열기* 를 미리 해 봅니다
    (보안 정책으로 다운로드나 로컬 파일 JS 가 막힌 곳이 있음).
 
-`docs/instructor_guide.md` 의 "수업 전 점검" 도 함께 보세요.
+`docs/conference_organizer_instructor_guide.md` 의 "수업 전 점검" 도 함께 보세요.
 
 ## 실습 2 — (대안) 모범 답안 노트북으로 강의식 진행 (예: 3시간)
 
-기본 수업 방식(Gemini 실습)의 진행표는 `docs/instructor_guide.md`. 아래는 모범 답안 노트북을 처음부터 같이 따라가는 강의식 진행입니다.
+기본 수업 방식(Gemini 실습)의 진행표는 `docs/conference_organizer_instructor_guide.md`. 아래는 모범 답안 노트북을 처음부터 같이 따라가는 강의식 진행입니다.
 
 | 시간 | 단계 | 포인트 |
 |---|---|---|

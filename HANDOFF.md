@@ -15,7 +15,7 @@
 ## 수업 방식 변경 (devlog 006)
 
 - **AI 활용 수업**: 학생은 Colab Gemini 에게 프롬프트로 노트북을 구성. 모범 답안 노트북은 마지막에 공개.
-- 문서: `docs/gemini_practice_guide.md`(학생), `docs/instructor_guide.md`(강사),
+- 문서: `docs/conference_organizer_practice_guide.md`(학생), `docs/conference_organizer_instructor_guide.md`(강사),
   `docs/reference_notebook_guide.md`(구 colab_guide — 모범 답안 안내서로 전환).
 
 ## 실습 1 — 브이월드 지도 앱 (devlog 007; 순서 변경 devlog 010)

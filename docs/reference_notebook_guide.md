@@ -1,7 +1,7 @@
-# 모범 답안 노트북 안내서 — 학회 프로그램 웹앱 만들기
+# 모범 답안 노트북 안내서 — Conference Organizer(학회 시간표 앱) 만들기
 
 > **수업 마지막에 공개하는 문서입니다.** 수업 본 과정은 학생이 Colab 의 Gemini 와 대화하며 직접 노트북을
-> 구성하는 방식이고([`gemini_practice_guide.md`](gemini_practice_guide.md)), 이 문서는 강사가 미리 만든
+> 구성하는 방식이고([`conference_organizer_practice_guide.md`](conference_organizer_practice_guide.md)), 이 문서는 강사가 미리 만든
 > 모범 답안 노트북 `gsk2026_practice.ipynb` 를 따라가며 **내가 만든 것과 비교**할 때 씁니다.
 > 노트북 링크: https://colab.research.google.com/github/jikhanjung/gsk2026-aiworkshop/blob/main/gsk2026_practice.ipynb
 

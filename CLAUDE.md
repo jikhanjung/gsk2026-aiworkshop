@@ -3,12 +3,12 @@
 ## 목적
 GSK 2026 AI 워크숍 학생 실습 자료 (GitHub: `jikhanjung/gsk2026-aiworkshop`, public).
 **AI 활용 수업**: 학생은 빈 Colab 노트북에서 **Gemini 에게 프롬프트를 입력하며** 미리 만든 학회 JSON 으로
-**단일 HTML 파일** 학회 시간표 앱을 만들고 → 내려받아 → 자기 PC 브라우저에서 쓴다.
-- 학생용: `docs/gemini_practice_guide.md` (완성 기준 9개·프롬프트 예시·Gemini 실수 패턴). 강사용: `docs/instructor_guide.md`.
+**단일 HTML 파일** 학회 시간표 앱 **Conference Organizer** 를 만들고 → 내려받아 → 자기 PC 브라우저에서 쓴다.
+- 학생용: `docs/conference_organizer_practice_guide.md` (완성 기준 9개·프롬프트 예시·Gemini 실수 패턴). 강사용: `docs/conference_organizer_instructor_guide.md`.
 - 이 저장소의 템플릿·노트북(`gsk2026_practice.ipynb`)은 **모범 답안** — 수업 마지막에 공개해 비교용으로 쓴다
   (`docs/reference_notebook_guide.md`). 노트북을 처음부터 주지 않는다.
 (PDF 파싱은 실습 범위 밖 — 강사 준비 작업. 데이터는 대한지질학회 프로그램북 PDF 를 파싱해 사용.)
-- **실습 순서: 실습 1 = 브이월드 지도 앱(더 단순, 먼저), 실습 2 = 학회 시간표 앱.**
+- **실습 순서: 실습 1 = 브이월드 지도 앱(더 단순, 먼저), 실습 2 = Conference Organizer.**
 - **실습 1 — 브이월드 지도 앱**: 같은 방식으로 Leaflet + 브이월드 WMTS 배경지도에 지점을 기록하는 HTML 앱.
   학생이 브이월드 인증키를 발급받아 **Colab 보안 비밀(`VWORLD_KEY`)** 로 넣는 과정이 핵심. 이 앱은 인터넷 필요(Leaflet CDN 허용).
   문서: `docs/vworld_map_practice_guide.md`(학생), `docs/vworld_map_instructor_guide.md`(강사), 샘플 `examples/vworld_map_sample.html`.
