@@ -79,14 +79,19 @@ This creates the three functions below. You don't need to understand their code,
 
 ### 3-2. Loading the data
 
-Use whichever of the two methods your instructor tells you to.
+Use only one of the three. Usually **Method A** is all you need.
 
-**Method A — Upload the file**
+**Method A — Download from the link (recommended)**
+1. Running the Method A cell downloads the data file your instructor shared and saves it as `conference.json`.
+   You don't need to change the link (`DATA_URL`) in the cell.
+2. If counts like `sessions …, talks …, abstracts …` are printed, it worked.
+
+**Method B — Upload the file** (if the link download doesn't work)
 1. When you run the data cell, a **Choose Files** button appears.
-2. Select the `conference.json` you downloaded beforehand.
+2. Select the `conference.json` you downloaded beforehand. (You can download the file from [this link](https://drive.google.com/file/d/1RIQlIQLFfPRQNLve4ZU9KyTKr1TMBvy4/view?usp=sharing).)
 3. If counts like `sessions …, talks …, abstracts …` are printed, it worked.
 
-**Method B — Connect Google Drive**
+**Method C — Connect Google Drive**
 1. When you run the Drive cell, a permission window pops up → choose your account → **Allow**.
 2. Add the `conference.json` shared by the instructor to your Drive with **Add shortcut to Drive** (or make a copy).
 3. Edit the path in the cell (`/content/drive/MyDrive/…`) to match your file's location, then run it.
@@ -192,7 +197,7 @@ download("out_step5.html")
 - **Always work in your copy.** The original notebook is view-only. (§1)
 - **When the runtime disconnects, your files disappear.** If you're idle for about 90 minutes, or leave the window closed for a long time, the runtime is reset and
   the uploaded `conference.json` and the HTML files you made are all deleted (the notebook cell contents remain).
-  → Recover with the menu **Runtime → Run before** (or run the cells in order from the top). Upload the data again.
+  → Recover with the menu **Runtime → Run before** (or run the cells in order from the top). Get the data again (Method A cell).
   → `download()` your results right away or save them to Drive.
 - **Run cells in order from the top.** If you skip the "Setup" cell, you'll get errors like `build is not defined`.
 - **If a cell is running (shown with ◼), other cells wait.** If it seems stuck, click ◼ to stop it.
@@ -254,7 +259,7 @@ The red error messages and line numbers tell you the cause.
 | Symptom | What to check |
 |------|-----------|
 | `NameError: name 'build' is not defined` | Did you run the Setup cell? Was the runtime reset? (§8-1) |
-| `FileNotFoundError: conference.json` | Did you upload the data? Was it deleted by a runtime reset? |
+| `FileNotFoundError: conference.json` | Did you load the data (Setup 2)? Was it deleted by a runtime reset? |
 | `build()` gives a `__DATA__` error | You deleted `__DATA__` from the template or wrote it twice |
 | The preview doesn't change | Did you re-run starting from the template cell? Reload the preview |
 | The preview area is empty | Re-run the cell. If it still fails, `download()` and check on your PC |
@@ -281,7 +286,7 @@ Listed in order of difficulty. Try them by editing the finished (Step 5) templat
 ## Appendix — Instructor checklist (before class)
 
 - [ ] Distribute the notebook share link as **view-only** (students save a copy)
-- [ ] Decide on and test the data distribution method (file for upload / shared Drive path)
+- [ ] Check that the Method A data link opens (Drive sharing: "Anyone with the link"). If not, prepare the file for Method B
 - [ ] On a lab PC, try **Chrome download → open local HTML → bookmarks persist** once (check security policies)
 - [ ] Check that the Colab preview (`preview`) loads on the lab network (if blocked, proceed with `download` only)
 - [ ] Prepare for runtime resets: demonstrate the "Run before" recovery method early in class

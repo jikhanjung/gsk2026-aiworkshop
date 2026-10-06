@@ -111,10 +111,13 @@ and for preparing the reference solution notebook so that students can follow it
    In particular, check that the `preview()` preview shows up on the lab network and that `download()` works.
 5. Share the notebook link as **view-only**. Students work after "Save a copy in Drive".
 6. Decide how to distribute the data (`docs/reference_notebook_guide.en.md` §3-2, `docs/conference_organizer_practice_guide.en.md` §2).
-   - **Method A, upload**: hand out `conference.json` via messenger or LMS and have students upload it. The simplest.
-   - **Method B, Drive**: put it in a shared folder; students "Add shortcut to My Drive" → edit `DATA_PATH` in the notebook.
+   - **Method A, link**: a notebook cell downloads the file shared on Google Drive as "Anyone with the link" (current: [link](https://drive.google.com/file/d/1RIQlIQLFfPRQNLve4ZU9KyTKr1TMBvy4/view?usp=sharing)).
+     If you change the file, find every use with `grep -rn 1RIQlIQLFfPRQNLve4ZU9KyTKr1TMBvy4` (notebook generator `DATA_URL`, guides in both languages) and regenerate the notebook.
+     ⚠️ This repository is public, so the link is public too. Set Drive sharing back to "Restricted" after class.
+   - **Method B, upload**: hand out `conference.json` via messenger or LMS and have students upload it. A fallback if the link is blocked.
+   - **Method C, Drive**: put it in a shared folder; students "Add shortcut to My Drive" → edit `DATA_PATH` in the notebook.
      An extra Drive permission window appears, so it takes a little longer.
-   - Either way, **restrict link sharing to enrolled students** and announce that redistribution is not allowed.
+   - Announce that redistribution is not allowed.
 7. On the lab PCs, try *Chrome download → double-click the local HTML → bookmark, then reopen* in advance
    (some places block downloads or JS in local files due to security policies).
 

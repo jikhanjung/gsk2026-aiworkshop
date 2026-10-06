@@ -111,10 +111,13 @@ README.en.md, docs/*.en.md                     위 안내서들과 이 README �
    특히 `preview()` 미리보기가 실습실 네트워크에서 뜨는지, `download()` 가 되는지 확인.
 5. 노트북 공유 링크는 **보기 전용**으로. 학생은 "드라이브에 사본 저장" 후 작업합니다.
 6. 데이터 배포 방법을 정합니다 (`docs/reference_notebook_guide.md` §3-2, `docs/conference_organizer_practice_guide.md` §2).
-   - **방법 A 업로드**: `conference.json` 을 메신저·LMS 로 나눠 주고 학생이 업로드. 가장 단순.
-   - **방법 B 드라이브**: 공유 폴더에 두고 학생이 "내 드라이브에 바로가기 추가" → 노트북의 `DATA_PATH` 수정.
+   - **방법 A 링크**: 구글 드라이브에 "링크가 있는 모든 사용자" 로 공유한 파일을 노트북 셀이 바로 내려받음 (현재 설정: [링크](https://drive.google.com/file/d/1RIQlIQLFfPRQNLve4ZU9KyTKr1TMBvy4/view?usp=sharing)).
+     파일을 바꾸면 `grep -rn 1RIQlIQLFfPRQNLve4ZU9KyTKr1TMBvy4` 로 노트북 생성기(`DATA_URL`)·안내서(한/영)를 모두 고치고 노트북 재생성.
+     ⚠️ 이 저장소는 public 이라 링크도 공개됨. 수업 뒤에는 드라이브 공유를 "제한됨" 으로 돌릴 것.
+   - **방법 B 업로드**: `conference.json` 을 메신저·LMS 로 나눠 주고 학생이 업로드. 링크가 막힐 때 대비.
+   - **방법 C 드라이브**: 공유 폴더에 두고 학생이 "내 드라이브에 바로가기 추가" → 노트북의 `DATA_PATH` 수정.
      드라이브 권한 창이 한 번 더 나오므로 시간이 조금 더 걸립니다.
-   - 어느 쪽이든 **링크 공유 범위를 수강생으로 제한**하고, 재배포 금지를 공지합니다.
+   - 재배포 금지를 공지합니다.
 7. 실습실 PC 에서 *Chrome 다운로드 → 로컬 HTML 더블클릭 → 북마크 후 다시 열기* 를 미리 해 봅니다
    (보안 정책으로 다운로드나 로컬 파일 JS 가 막힌 곳이 있음).
 

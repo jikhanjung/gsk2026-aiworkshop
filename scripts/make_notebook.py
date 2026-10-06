@@ -186,21 +186,36 @@ print("준비 완료 / ready: build, preview, download")
 md("""
 ## 준비 2. 데이터 불러오기 / Setup 2. Load the data
 
-강사가 안내한 방법 **하나만** 실행하세요.
+세 방법 중 **하나만** 실행하세요. 보통은 **방법 A** 면 됩니다.
 `sessions …, talks …, abstracts …` 처럼 개수가 출력되면 성공입니다.
 
-> 런타임이 초기화되면(오래 쉬었을 때 등) 업로드한 파일이 사라집니다. 그때는 준비 1 부터 다시 실행하세요.
+> 런타임이 초기화되면(오래 쉬었을 때 등) 받은 파일이 사라집니다. 그때는 준비 1 부터 다시 실행하세요.
 
-### 방법 A — 파일 업로드
-셀을 실행하면 **파일 선택** 버튼이 나옵니다 → 받아 둔 `conference.json` 을 고르세요.
+### 방법 A — 링크로 바로 받기 (권장)
+셀을 실행하면 강사가 공유한 데이터 파일을 내려받아 `conference.json` 으로 저장합니다.
 """, """
-Run **only one** of the two methods, whichever your instructor tells you.
+Run **only one** of the three methods. Usually **Method A** is all you need.
 It worked if you see counts like `sessions …, talks …, abstracts …`.
 
-> When the runtime is reset (e.g. after a long break), uploaded files disappear. Then run again from Setup 1.
+> When the runtime is reset (e.g. after a long break), downloaded files disappear. Then run again from Setup 1.
 
-### Method A — upload the file
-Running the cell shows a **Choose Files** button → pick the `conference.json` you received.
+### Method A — download from the link (recommended)
+Running the cell downloads the data file your instructor shared and saves it as `conference.json`.
+""")
+code('''
+import urllib.request
+
+# 강사가 공유한 구글 드라이브 파일 / the Google Drive file shared by the instructor
+DATA_URL = "https://drive.google.com/uc?export=download&id=1RIQlIQLFfPRQNLve4ZU9KyTKr1TMBvy4"
+urllib.request.urlretrieve(DATA_URL, "conference.json")   # 내려받아 저장 / download and save
+load_data("conference.json")
+''')
+md("""
+### 방법 B — 파일 업로드
+링크로 받기가 안 될 때. 셀을 실행하면 **파일 선택** 버튼이 나옵니다 → 받아 둔 `conference.json` 을 고르세요.
+""", """
+### Method B — upload the file
+If the link download doesn't work. Running the cell shows a **Choose Files** button → pick the `conference.json` you received.
 """)
 code('''
 from google.colab import files
@@ -212,12 +227,12 @@ if name != "conference.json":
 load_data("conference.json")
 ''')
 md("""
-### 방법 B — 구글 드라이브 연결
+### 방법 C — 구글 드라이브 연결
 1. 강사가 공유한 `conference.json` 을 **내 드라이브에 바로가기 추가**(또는 사본)해 둡니다.
 2. 셀을 실행하면 권한 창이 뜹니다 → 내 계정 선택 → **허용**.
 3. `DATA_PATH` 를 내 파일 위치에 맞게 고칩니다 (왼쪽 📁 파일 패널 → `drive/MyDrive` 에서 파일 → ⋮ → **경로 복사**).
 """, """
-### Method B — connect Google Drive
+### Method C — connect Google Drive
 1. Add a **shortcut to My Drive** (or a copy) of the `conference.json` your instructor shared.
 2. Running the cell opens a permission window → choose your account → **Allow**.
 3. Change `DATA_PATH` to where your file is (📁 Files panel on the left → `drive/MyDrive` → the file → ⋮ → **Copy path**).

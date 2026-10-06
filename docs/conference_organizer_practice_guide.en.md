@@ -41,20 +41,25 @@ exporting/importing bookmarks, automatically selecting today's date, a printable
 |--------|------|
 | **Personal Google account** | School or work accounts may have Gemini turned off (§7-1) |
 | PC + **Chrome** | Phones and tablets are not recommended |
-| Data file `conference.json` | Provided by the instructor |
+| Data file `conference.json` | The [Google Drive link](https://drive.google.com/file/d/1RIQlIQLFfPRQNLve4ZU9KyTKr1TMBvy4/view?usp=sharing) shared by the instructor |
 
 1. https://colab.research.google.com → **New notebook**.
 2. Rename the notebook (e.g. `ConferenceApp_YourName.ipynb`). The notebook is saved in the `Colab Notebooks` folder in your My Drive.
 3. Click **the blue round ✦ button at the bottom center** of the screen (hover over it and it says **Toggle Gemini**) to open the Gemini panel.
    When you open a new notebook, the Gemini panel is **closed by default**, so you won't see it at first. Clicking again closes it.
    If the button isn't there at all, see §7-1.
-4. Upload the data file to the runtime. Either:
-   - **Upload**: 📁 Files panel on the left → upload button → `conference.json`
+4. Get the data file into the runtime. One of these three:
+   - **Download from the link (recommended)**: paste these two lines into a new code cell and run it → it worked if you see `conference.json` in the 📁 Files panel on the left.
+     ```
+     !wget -q -O conference.json "https://drive.google.com/uc?export=download&id=1RIQlIQLFfPRQNLve4ZU9KyTKr1TMBvy4"
+     !ls -l conference.json
+     ```
+   - **Upload**: download it to your PC from [the link](https://drive.google.com/file/d/1RIQlIQLFfPRQNLve4ZU9KyTKr1TMBvy4/view?usp=sharing) → 📁 Files panel on the left → upload button → `conference.json`
      (or ask Gemini: "Make a cell that uploads a file")
    - **Drive**: put `conference.json` in your Drive and ask Gemini: "Connect to my Drive and make code that reads this file"
      (allow it in the permission window)
 
-> ⚠️ Uploaded files **disappear when the runtime disconnects.** If you come back after a long break, you need to upload them again (§7-2).
+> ⚠️ Files in the runtime **disappear when the runtime disconnects.** If you come back after a long break, you need to get them again (§7-2) — just re-run the `!wget` cell above.
 
 ---
 
@@ -201,7 +206,7 @@ Use your own app and ask Gemini to fix whatever is inconvenient. For example:
 ### 7-2. Colab runtime
 
 - **When the runtime disconnects, uploaded files and the HTML you made disappear** (notebook cells remain).
-  → Upload the data again and recover with the menu **Runtime → Run before** (run all previous cells).
+  → Recover with the menu **Runtime → Run before** (run all previous cells); if the `!wget` cell is above, the data is downloaded again too.
   → Download a version that works right away, or save it to Drive.
 - Cells must be run **in order from the top**. If you run only a cell in the middle, you get a `… is not defined` error.
 

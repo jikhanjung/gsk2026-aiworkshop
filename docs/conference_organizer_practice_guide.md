@@ -41,20 +41,25 @@ Google Colab 옆의 **Gemini** 에게 말로 부탁하면서, 학회 발표 데�
 |--------|------|
 | **개인 Google 계정** | 학교·회사 계정은 Gemini 가 꺼져 있을 수 있습니다 (§7-1) |
 | PC + **Chrome** | 휴대폰·태블릿은 비권장 |
-| 데이터 파일 `conference.json` | 강사가 배포 |
+| 데이터 파일 `conference.json` | 강사가 공유한 [구글 드라이브 링크](https://drive.google.com/file/d/1RIQlIQLFfPRQNLve4ZU9KyTKr1TMBvy4/view?usp=sharing) |
 
 1. https://colab.research.google.com → **새 노트북**.
 2. 노트북 이름을 바꿉니다 (예: `학회앱_홍길동.ipynb`). 노트북은 내 드라이브의 `Colab Notebooks` 폴더에 저장됩니다.
 3. 화면 **맨 아래 가운데의 파란 동그라미 ✦ 버튼**(마우스를 올리면 **Toggle Gemini**)을 눌러 Gemini 패널을 엽니다.
    새 노트북을 열면 Gemini 패널이 **닫혀 있는 것이 기본**이라 처음엔 안 보입니다. 다시 누르면 닫힙니다.
    버튼이 아예 없으면 §7-1.
-4. 데이터 파일을 런타임에 올립니다. 둘 중 하나:
-   - **업로드**: 왼쪽 📁 파일 패널 → 업로드 버튼 → `conference.json`
+4. 데이터 파일을 런타임에 가져옵니다. 셋 중 하나:
+   - **링크로 받기 (권장)**: 새 코드 셀에 아래 두 줄을 붙여 넣고 실행 → 왼쪽 📁 파일 패널에 `conference.json` 이 보이면 성공.
+     ```
+     !wget -q -O conference.json "https://drive.google.com/uc?export=download&id=1RIQlIQLFfPRQNLve4ZU9KyTKr1TMBvy4"
+     !ls -l conference.json
+     ```
+   - **업로드**: [링크](https://drive.google.com/file/d/1RIQlIQLFfPRQNLve4ZU9KyTKr1TMBvy4/view?usp=sharing)에서 PC 로 내려받은 뒤 → 왼쪽 📁 파일 패널 → 업로드 버튼 → `conference.json`
      (또는 Gemini 에게 "파일 업로드하는 셀 만들어 줘")
    - **드라이브**: 드라이브에 `conference.json` 을 넣어 두고 Gemini 에게 "드라이브 연결해서 이 파일 읽는 코드 만들어 줘"
      (권한 창에서 허용)
 
-> ⚠️ 업로드한 파일은 **런타임이 끊기면 사라집니다.** 오래 쉬었다 오면 다시 올려야 합니다(§7-2).
+> ⚠️ 런타임에 가져온 파일은 **런타임이 끊기면 사라집니다.** 오래 쉬었다 오면 다시 받아야 합니다(§7-2). 위의 `!wget` 셀을 다시 실행하면 됩니다.
 
 ---
 
@@ -201,7 +206,7 @@ Google Colab 옆의 **Gemini** 에게 말로 부탁하면서, 학회 발표 데�
 ### 7-2. Colab 런타임
 
 - **런타임이 끊기면 업로드 파일과 만든 HTML 이 사라집니다** (노트북 셀은 남음).
-  → 데이터를 다시 올리고, 메뉴 **런타임 → 이전 셀 모두 실행** 으로 복구.
+  → 메뉴 **런타임 → 이전 셀 모두 실행** 으로 복구 (`!wget` 셀이 위에 있으면 데이터도 다시 받아짐).
   → 잘 된 버전은 바로 다운로드하거나 드라이브에 저장.
 - 셀은 **위에서부터 순서대로** 실행되어야 합니다. 중간 셀만 실행하면 `… is not defined` 오류가 납니다.
 
