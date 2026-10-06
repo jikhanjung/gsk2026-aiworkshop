@@ -18,7 +18,7 @@
 - 문서: `docs/gemini_practice_guide.md`(학생), `docs/instructor_guide.md`(강사),
   `docs/reference_notebook_guide.md`(구 colab_guide — 모범 답안 안내서로 전환).
 
-## 실습 2 — 브이월드 지도 앱 (devlog 007)
+## 실습 1 — 브이월드 지도 앱 (devlog 007; 순서 변경 devlog 010)
 
 - 문서: `docs/vworld_map_practice_guide.md`(학생), `docs/vworld_map_instructor_guide.md`(강사), 샘플 `examples/vworld_map_sample.html`(사용자가 Gemini 로 만든 것).
 - **미확인 — 수업 전 반드시 실제 키로 점검**: 브이월드 WMTS 가 서비스 URL(도메인)을 검사하는지,
