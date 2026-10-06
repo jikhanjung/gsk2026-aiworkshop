@@ -20,7 +20,7 @@
   .title { margin: 4px 0 2px; font-weight: 600; }
   .author { color: #6b7686; font-size: 13px; }
   mark { background: #ffe58a; }
-  /* [Step 4] 탭, 북마크 버튼, 내 일정 */
+  /* [Step 4] 탭, 북마크 버튼, 내 일정 / tabs, bookmark button, My Schedule */
   .tabs { display: flex; gap: 6px; margin-bottom: 10px; }
   .tab { flex: 1; border: 1px solid #e4e7ec; background: #fff; border-radius: 8px; padding: 8px; font-size: 14px; font-weight: 600; cursor: pointer; color: #6b7686; }
   .tab.on { background: #0d3b66; color: #fff; border-color: #0d3b66; }
@@ -57,6 +57,8 @@ function esc(s) {
 
 // [Step 4] 북마크: 발표 id 들을 Set 에 담고, 바뀔 때마다 localStorage 에 저장한다.
 // localStorage 는 브라우저 설정(시크릿 창, 쿠키 차단 등)에 따라 막힐 수 있으므로 try/catch 로 감싼다.
+// EN: [Step 4] Bookmarks: keep talk ids in a Set and save it to localStorage on every change.
+// EN: localStorage can be blocked by browser settings (incognito, blocked cookies …), so wrap it in try/catch.
 const BM_KEY = "gsk2026.bookmarks";
 function loadBookmarks() {
   try { return new Set(JSON.parse(localStorage.getItem(BM_KEY) || "[]")); }
@@ -64,12 +66,14 @@ function loadBookmarks() {
 }
 function saveBookmarks() {
   try { localStorage.setItem(BM_KEY, JSON.stringify([...bookmarks])); }
-  catch (e) { /* 저장이 막혀도 이번 화면에서는 계속 쓸 수 있다 */ }
+  catch (e) { /* 저장이 막혀도 이번 화면에서는 계속 쓸 수 있다 / even if saving is blocked, it still works on this page */ }
 }
 const bookmarks = loadBookmarks();
 
 // [Step 3] 화면 상태(state)를 한곳에 두고, 바뀔 때마다 render() 로 다시 그린다
+// EN: [Step 3] keep the screen state in one place and redraw everything with render() whenever it changes
 // [Step 4] tab: "program"(전체 프로그램) 또는 "my"(내 일정)
+// EN: [Step 4] tab: "program" (full program) or "my" (My Schedule)
 const state = { tab: "program", day: DATA.meta.days[0], room: "전체", q: "" };
 const rooms = ["전체", ...new Set(DATA.talks.map(t => t.room))].sort((a, b) => a === "전체" ? -1 : b === "전체" ? 1 : a.localeCompare(b));
 
@@ -85,6 +89,7 @@ function highlight(text, q) {
 }
 
 // [Step 4] 발표 카드 하나를 그리는 함수 — 프로그램 목록과 내 일정에서 같이 쓴다
+// EN: [Step 4] draws one talk card — shared by the program list and My Schedule
 function talkHTML(t, { q = "", showDay = false, clash = false } = {}) {
   const on = bookmarks.has(t.id);
   return `
@@ -103,6 +108,9 @@ function talkHTML(t, { q = "", showDay = false, clash = false } = {}) {
 // [Step 4] 시간 겹침 찾기: 같은 날 발표를 시작 시각 순으로 놓고,
 // 앞 발표들 중 가장 늦게 끝나는 시각보다 내 시작이 이르면 겹친다.
 // ("10:30" 같은 문자열은 길이가 같으므로 문자열 비교로도 시간 순서가 맞다)
+// EN: [Step 4] Finding time clashes: line up the day's talks by start time;
+// EN: a talk clashes if it starts before the latest end time of the talks before it.
+// EN: (strings like "10:30" all have the same length, so comparing them as strings gives the right time order)
 function findClashes(talks) {
   const clash = new Set();
   let latestEnd = "", latestId = null;
@@ -114,7 +122,7 @@ function findClashes(talks) {
 }
 
 function renderMy() {
-  const mine = DATA.talks.filter(t => bookmarks.has(t.id));   // DATA.talks 는 이미 날짜·시간순
+  const mine = DATA.talks.filter(t => bookmarks.has(t.id));   // DATA.talks 는 이미 날짜·시간순 / already sorted by date and time
   if (mine.length === 0) {
     return '<div class="empty">아직 북마크한 발표가 없습니다.<br>프로그램에서 ☆ 를 눌러 보세요.</div>';
   }
@@ -131,6 +139,7 @@ function renderMy() {
 
 function render() {
   // [Step 4] 탭 버튼과 화면 전환
+  // EN: [Step 4] tab buttons and switching views
   document.getElementById("tabs").innerHTML = `
     <button class="tab ${state.tab === "program" ? "on" : ""}" data-tab="program">전체 프로그램</button>
     <button class="tab ${state.tab === "my" ? "on" : ""}" data-tab="my">내 일정 (${bookmarks.size})</button>`;
@@ -147,6 +156,7 @@ function render() {
   const q = state.q.trim().toLowerCase();
   const talks = DATA.talks.filter(t =>
     // 검색어가 있으면 날짜와 상관없이 전체에서 찾는다
+    // EN: if there is a search term, search all days regardless of the selected date
     (q ? true : t.date === state.day) &&
     (state.room === "전체" || t.room === state.room) &&
     (!q || t.title.toLowerCase().includes(q) || (t.first_author || "").toLowerCase().includes(q))
@@ -157,6 +167,7 @@ function render() {
 }
 
 // 이벤트: 칩을 누르거나 검색어를 입력하면 state 를 바꾸고 다시 그린다
+// EN: Events: clicking a chip or typing a search term changes state, then redraws
 document.getElementById("days").addEventListener("click", e => {
   if (e.target.dataset.v) { state.day = e.target.dataset.v; render(); }
 });
@@ -166,10 +177,12 @@ document.getElementById("rooms").addEventListener("click", e => {
 document.getElementById("q").addEventListener("input", e => { state.q = e.target.value; render(); });
 
 // [Step 4] 탭 전환
+// EN: [Step 4] switching tabs
 document.getElementById("tabs").addEventListener("click", e => {
   if (e.target.dataset.tab) { state.tab = e.target.dataset.tab; render(); }
 });
 // [Step 4] ☆ 버튼: 목록이 다시 그려져도 동작하도록 main 에 한 번만 달아 둔다 (이벤트 위임)
+// EN: [Step 4] ☆ button: attach the listener once to <main> so it keeps working after the list is redrawn (event delegation)
 document.querySelector("main").addEventListener("click", e => {
   const btn = e.target.closest(".bm");
   if (!btn) return;
@@ -184,6 +197,8 @@ render();
 
 // 해 볼 것: 내 일정에서 겹치는 발표 중 하나를 고르면 나머지를 흐리게 표시해 보기,
 //          북마크 수가 많은 날짜 칩에 ★ 표시 달아 보기
+// EN: Try: when you pick one of the clashing talks in My Schedule, dim the others;
+// EN:      put a ★ on date chips that have many bookmarks
 </script>
 </body>
 </html>

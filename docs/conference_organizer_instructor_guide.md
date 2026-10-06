@@ -1,5 +1,7 @@
 # 강사용 수업 운영 안내 — Gemini 로 Conference Organizer(학회 시간표 앱) 만들기
 
+**한국어** | [English](conference_organizer_instructor_guide.en.md)
+
 ## 수업 방식
 
 - 학생은 **빈 Colab 노트북**에서 시작해, 옆 패널의 **Gemini 에게 프롬프트를 입력하며** 노트북을 구성한다.

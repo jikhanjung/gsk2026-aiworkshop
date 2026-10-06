@@ -1,5 +1,7 @@
 # Gemini 와 함께 Conference Organizer(학회 시간표 앱) 만들기 — 학생용 실습 안내서
 
+**한국어** | [English](conference_organizer_practice_guide.en.md)
+
 Google Colab 옆의 **Gemini** 에게 말로 부탁하면서, 학회 발표 데이터(JSON)로
 **내 PC 브라우저에서 쓰는 학회 시간표 앱 Conference Organizer(HTML 파일 하나)** 를 만드는 실습입니다.
 코드를 직접 다 짜는 것이 아니라, **원하는 것을 정확히 설명하고, 결과를 확인하고, 고쳐 달라고 하는 과정**을 연습합니다.

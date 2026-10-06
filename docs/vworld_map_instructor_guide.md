@@ -1,5 +1,7 @@
 # 강사용 수업 운영 안내 — Gemini 로 브이월드 지도 앱 만들기
 
+**한국어** | [English](vworld_map_instructor_guide.en.md)
+
 학생용 안내서: `docs/vworld_map_practice_guide.md`. **워크숍의 첫 번째 실습** — 빈 Colab 노트북에서 Gemini 에게 프롬프트로 요청하며
 **HTML 파일 하나**짜리 지도 앱을 만든다. 두 번째 실습(Conference Organizer, `docs/conference_organizer_instructor_guide.md`)도 같은 방식이다.
 

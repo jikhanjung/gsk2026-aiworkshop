@@ -42,6 +42,8 @@ GSK 2026 AI 워크숍 학생 실습 자료 (GitHub: `jikhanjung/gsk2026-aiworksh
 - `devlog/README.md` — devlog 색인. 새 devlog 를 쓰면 라운드 표에 한 줄 추가.
 - `HANDOFF.md` — 현재 작업 상태와 다음 할 일 (세션이 바뀌어도 이어받을 수 있게 작업 끝날 때 갱신).
 - `README.md` — 프로젝트 소개와 사용법 (강사용 수업 안내 포함).
+- **영어판**: `README.en.md`, `docs/*.en.md` (학생·강사용 문서 전부). 한국어 문서를 고치면 **영어판도 같이** 고친다.
+  맨 위 언어 전환 줄(`**한국어** | [English](….en.md)`)을 유지하고, 영어판의 문서 링크는 `.en.md` 로. CLAUDE.md·HANDOFF·devlog 는 한국어만.
 - 이 파일(CLAUDE.md)에는 설계 결정과 규칙만 둔다. 진행 상황은 HANDOFF.md 로.
 
 ## 현재 상태

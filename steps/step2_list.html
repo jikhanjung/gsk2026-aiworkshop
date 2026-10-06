@@ -22,15 +22,18 @@
 
 <script>
 // 파이썬이 이 자리에 JSON 데이터를 넣어 준다.
+// EN: Python puts the JSON data in this spot.
 const DATA = __DATA__;
 
 // [Step 2] 데이터 배열 → HTML 문자열 → 화면
+// EN: [Step 2] data array → HTML string → screen
 document.getElementById("conf-name").textContent = DATA.meta.name;
 
 const firstDay = DATA.meta.days[0];
 const talks = DATA.talks.filter(t => t.date === firstDay);
 
 // 사용자 데이터를 innerHTML 에 넣을 때는 꼭 이스케이프한다 (<, & 같은 문자 대비)
+// EN: Always escape data before putting it into innerHTML (in case of characters like <, &)
 function esc(s) {
   return String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 }
@@ -44,6 +47,7 @@ document.getElementById("list").innerHTML = talks.map(t => `
   </div>`).join("");
 
 // 해 볼 것: 발표 수를 제목 옆에 표시해 보기, 세션 코드(t.session)도 보여 주기
+// EN: Try: show the number of talks next to the title; also show the session code (t.session)
 </script>
 </body>
 </html>

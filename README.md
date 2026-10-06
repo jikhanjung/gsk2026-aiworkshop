@@ -1,5 +1,7 @@
 # GSK 2026 AI 워크숍 — Gemini 와 함께 HTML 앱 만들기
 
+**한국어** | [English](README.en.md)
+
 학생들이 **Google Colab 의 Gemini 에게 프롬프트를 입력하며** 노트북을 구성하고,
 그 결과로 **HTML 파일 하나짜리 앱**을 만들어 내려받아 내 PC 브라우저에서 쓰는 실습 자료입니다.
 코드를 처음부터 주지 않고, **원하는 것을 정확히 말하고 → 결과를 확인하고 → 고쳐 달라고 하는 과정**을 연습합니다.
@@ -48,22 +50,23 @@
 ## 저장소 구성
 
 ```
-data/conference.json       실습 데이터 (git 미추적, scripts/parse_program_book.py 로 생성)
-data/src/                  원본 PDF (git 미추적) — gsk2025_program_book.pdf
-steps/step2_list.html      Step 2  JS 로 목록 그리기
-steps/step3_filter.html    Step 3  날짜·장소 필터, 검색 (state + render)
-steps/step4_bookmark.html  Step 4  ☆ 북마크(localStorage), 내 일정, 시간 겹침
-steps/app.html             Step 5  완성본: 하단 탭, 발표 상세(hash 라우팅), 세션, 초록 본문 검색, 북마크 내보내기/불러오기
-build.py                   템플릿 + JSON → 단일 HTML (로컬용, 노트북의 build() 와 같은 일)
-scripts/make_notebook.py   steps/*.html 을 %%writefile 셀로 넣어 노트북 생성
-scripts/check.py           전체 검증 (빌드, JS 문법, 노트북, 렌더 스모크 테스트)
-scripts/smoke_test.js      jsdom 렌더 스모크 테스트 (check.py 가 호출)
-docs/conference_organizer_practice_guide.md     학생용 Gemini 실습 안내서
-docs/conference_organizer_instructor_guide.md          강사용 수업 운영 안내
-docs/reference_notebook_guide.md  모범 답안 노트북 안내서 (수업 마지막 공개)
-docs/vworld_map_practice_guide.md 실습 1 학생용 안내서 (브이월드 지도 앱, §9 KIGAM 지질도 심화)
-docs/vworld_map_instructor_guide.md 실습 1 강사용 안내
-examples/vworld_map_sample.html   실습 1 참고 예시
+data/conference.json                           실습 데이터 (git 미추적, scripts/parse_program_book.py 로 생성)
+data/src/                                      원본 PDF (git 미추적) — gsk2025_program_book.pdf
+steps/step2_list.html                          Step 2  JS 로 목록 그리기
+steps/step3_filter.html                        Step 3  날짜·장소 필터, 검색 (state + render)
+steps/step4_bookmark.html                      Step 4  ☆ 북마크(localStorage), 내 일정, 시간 겹침
+steps/app.html                                 Step 5  완성본: 하단 탭, 발표 상세(hash 라우팅), 세션, 초록 본문 검색, 북마크 내보내기/불러오기
+build.py                                       템플릿 + JSON → 단일 HTML (로컬용, 노트북의 build() 와 같은 일)
+scripts/make_notebook.py                       steps/*.html 을 %%writefile 셀로 넣어 노트북 생성
+scripts/check.py                               전체 검증 (빌드, JS 문법, 노트북, 렌더 스모크 테스트)
+scripts/smoke_test.js                          jsdom 렌더 스모크 테스트 (check.py 가 호출)
+docs/conference_organizer_practice_guide.md    실습 2 학생용 안내서 (Conference Organizer)
+docs/conference_organizer_instructor_guide.md  실습 2 강사용 안내
+docs/reference_notebook_guide.md               실습 2 모범 답안 노트북 안내서 (수업 마지막 공개)
+docs/vworld_map_practice_guide.md              실습 1 학생용 안내서 (브이월드 지도 앱, §9 KIGAM 지질도 심화)
+docs/vworld_map_instructor_guide.md            실습 1 강사용 안내
+examples/vworld_map_sample.html                실습 1 참고 예시
+README.en.md, docs/*.en.md                     위 안내서들과 이 README 의 영어판
 ```
 
 템플릿은 모두 `const DATA = __DATA__;` 한 자리를 가지고 있고, 파이썬이 그 자리에 JSON 을 넣습니다
